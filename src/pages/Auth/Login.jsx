@@ -5,13 +5,13 @@ import { Formik } from "formik"
 import { ScrollView, StyleSheet, View } from "react-native"
 import { useToast } from "react-native-toast-notifications"
 import * as Yup from "yup"
+import { setLocalStorage } from '../../utils/storage'
 
 // components
-import { useState } from "react"
-import { loginApi } from "../../api/auth"
 import Button from "../../components/atoms/Button"
 import InputForm from "../../components/atoms/Form/InputForm"
 import Header from "../../components/molecules/Header"
+import { loginApi } from "../../utils/api/auth"
 
 
 const fetchUser = () => {
@@ -22,8 +22,6 @@ const fetchUser = () => {
 
 const Login = ({ navigation }) => {
     const toast = useToast();
-    const [isToast, setIsToast] = useState(false)
-
     const initialValues = {
         username: '',
         password: ''
@@ -37,22 +35,13 @@ const Login = ({ navigation }) => {
         queryKey: ["breakingNews"],
         queryFn: fetchUser,
     });
-
-    const storeData = async (value) => {
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem('auth', jsonValue);
-        } catch (e) {
-            // saving error
-        }
-    };
     const loginQuery = useMutation({
         mutationFn: (valueData) => {
             return loginApi(valueData)
         },
         onSuccess: (data) => {
             navigation.push('ListInventory')
-            storeData(data)
+            setLocalStorage('auth', data)
         },
         onError: (err) => {
             toast.show("Login is failed")
@@ -71,9 +60,7 @@ const Login = ({ navigation }) => {
                     initialValues={initialValues}
                     validationSchema={loginSchema}
                     onSubmit={values => {
-                        console.log('value', values)
                         loginQuery.mutate(values)
-                        
                     }}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (

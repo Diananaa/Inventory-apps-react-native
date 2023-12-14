@@ -7,6 +7,7 @@ import { ToastProvider } from 'react-native-toast-notifications';
 import Login from '../pages/Auth/Login';
 import Hello from "../pages/Hello";
 import { CreateInventory, EditInventory, ListInventory } from '../pages/Inventory';
+import SplashScreen from '../pages/Splashscreen';
 const Stack = createNativeStackNavigator();
 
 const queryClient = new QueryClient()
@@ -17,6 +18,7 @@ const App = () => {
       <NavigationContainer>
         <ToastProvider>
           <Stack.Navigator>
+            <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
             <Stack.Screen header name="EditInventory" component={EditInventory} options={{ headerShown: false }} />
