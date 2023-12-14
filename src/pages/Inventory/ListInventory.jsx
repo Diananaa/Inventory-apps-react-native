@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ICplusLogo } from "../../assets/icons";
 
@@ -7,6 +8,16 @@ import ProductListCard from "../../components/atoms/cards/ProductListCard";
 import Header from "../../components/molecules/Header";
 
 const ListInventory = ({ navigation }) => {
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('auth');
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+            // error reading value
+        }
+    };
+    console.log('getDataLocal', getData().then((e)=> console.log('hasil local list', e)))
     return (
         <View style={styles.container}>
             <Header

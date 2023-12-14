@@ -24,6 +24,7 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                         placeholder={placeholder}
                         style={styles.inputType}
                         {...props}
+                        secureTextEntry={ type === "password" ? true : false}
                     />
                 </View>
                 {
@@ -61,8 +62,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
-        // paddingRight: 8,
-        // height: 20
     },
     input: {
         borderWidth: 1,
@@ -74,16 +73,15 @@ const styles = StyleSheet.create({
         marginTop: 4
     },
     inputType: {
-        fontSize: 18,
+        fontSize: 16,
         paddingVertical: 8,
         paddingHorizontal: 12,
         width: 100,
         flex: 1,
-        // height: 
     },
     labelStyle: {
         marginBottom: 4,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '500'
     },
     iconStyle: {

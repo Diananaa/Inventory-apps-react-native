@@ -1,13 +1,29 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useMutation, useQuery } from "@tanstack/react-query"
+import axios from "axios"
 import { Formik } from "formik"
 import { ScrollView, StyleSheet, View } from "react-native"
+import { useToast } from "react-native-toast-notifications"
+import * as Yup from "yup"
 
 // components
+import { useState } from "react"
+import { loginApi } from "../../api/auth"
 import Button from "../../components/atoms/Button"
 import InputForm from "../../components/atoms/Form/InputForm"
 import Header from "../../components/molecules/Header"
-import * as Yup from "yup";
 
-const Login = () => {
+
+const fetchUser = () => {
+    const url = `https://dummyjson.com/products/1`;
+    const response = axios.get(url).then((data) => data).catch((err) => console.error(err));
+    return response
+};
+
+const Login = ({ navigation }) => {
+    const toast = useToast();
+    const [isToast, setIsToast] = useState(false)
+
     const initialValues = {
         username: '',
         password: ''
@@ -16,17 +32,49 @@ const Login = () => {
         username: Yup.string().required("Username is required"),
         password: Yup.string().min(3, "Password min 3 character").required("Password is required")
     })
+
+    const breakingNewsQuery = useQuery({
+        queryKey: ["breakingNews"],
+        queryFn: fetchUser,
+    });
+
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('auth', jsonValue);
+        } catch (e) {
+            // saving error
+        }
+    };
+    const loginQuery = useMutation({
+        mutationFn: (valueData) => {
+            return loginApi(valueData)
+        },
+        onSuccess: (data) => {
+            navigation.push('ListInventory')
+            storeData(data)
+        },
+        onError: (err) => {
+            toast.show("Login is failed")
+        }
+    })
+
     return (
         <>
             <Header
                 title={"Login"}
                 desc={"I have a acount login"}
             />
+
             <ScrollView style={styles.container}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={loginSchema}
-                    onSubmit={values => console.log(values)}
+                    onSubmit={values => {
+                        console.log('value', values)
+                        loginQuery.mutate(values)
+                        
+                    }}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                         <View>
@@ -49,7 +97,7 @@ const Login = () => {
                                 type={"password"}
                             />
                             <View style={styles.buttonStyle}>
-                                <Button title={"Login"} onPress={handleSubmit} />
+                                <Button title={"Login"} disabled={loginQuery.isPending} onPress={handleSubmit} />
                             </View>
                         </View>
                     )}
