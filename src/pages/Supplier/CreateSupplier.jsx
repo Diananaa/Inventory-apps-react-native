@@ -1,18 +1,18 @@
+import { useMutation } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { ScrollView, StyleSheet, View } from 'react-native'
+import { useToast } from 'react-native-toast-notifications'
 import { useSelector } from 'react-redux'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
 import Header from '../../components/molecules/Header'
-import useSupplierAPI, { createSupplierAPI } from '../../utils/api/supplier'
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import useSupplierAPI from '../../utils/api/supplier'
 
-const CreateSupplier = () => {
+const CreateSupplier = ({ navigation }) => {
+    const toast = useToast();
     const token = useSelector((state) => state.auth.token)
     const { createSupplierAPI } = useSupplierAPI()
-    console.log('token CreateSupplier', token)
 
     const initialValues = {
         name: '',
@@ -38,50 +38,17 @@ const CreateSupplier = () => {
         namePhoneOffice: Yup.string(),
         valuePhoneOffice: Yup.number(),
     })
-
-    const datas = {
-        name: "maret",
-        address: "jln sudirman jb",
-        city: "jakarta",
-        postCode: "12345",
-        contacts: [
-            {
-                name: "mac 456",
-                contactType: "mobilePhone",
-                value: "0898765432"
-            }, {
-                name: "mac 1",
-                contactType: "officePhone",
-                value: "12345463"
-            }
-        ]
-    }
     const createQuery = useMutation({
         mutationFn: (valueData) => {
-            console.log('valueData', valueData)
             return createSupplierAPI(valueData, token)
-            // return createSupplierAPI(valueData, token)
         },
         onSuccess: (data) => {
-            console.log('onSuccess createQuery', data)
+            navigation.replace('ListInventory')
         },
         onError: (err) => {
-            console.log('onError createQuery', err)
+            toast.show("Create supplier is failed")
         }
     })
-
-    // const createSupplieerrr = async (data, token) => {
-    //     return axios.post('https://mobile.dev.quadrant-si.id/developertest/Supplier',
-    //         data,
-    //         {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-    //             }
-    //         }
-
-    //     )
-    //         .then((res) => console.log('res.data', res.data)).catch((err) => console.log(err))
-    // }
 
     return (
         <View >
@@ -91,12 +58,30 @@ const CreateSupplier = () => {
 
             <Formik
                 initialValues={initialValues}
-                // validationSchema={supplierSchema}
-                onSubmit={values => {
-                    console.log('v', datas)
-                    // createSupplieerrr(datas, token)
-                    // createSupplierAPI(datas, token)
-                    createQuery.mutate(datas)
+                validationSchema={supplierSchema}
+                onSubmit={datas => {
+                    const data = {
+                        name: datas.name,
+                        address: datas.address,
+                        city: datas.city,
+                        postCode: datas.postCode,
+                        contacts: [
+                            {
+                                name: datas.nameEmail,
+                                contactType: "email",
+                                value: datas.valueEmail
+                            }, {
+                                name: datas.namePhoneMobile,
+                                contactType: "mobilePhone",
+                                value: datas.valuePhoneMobile
+                            }, {
+                                name: datas.namePhoneOffice,
+                                contactType: "mobilePhone",
+                                value: datas.valuePhoneOffice
+                            }
+                        ]
+                    }
+                    createQuery.mutate(data)
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
@@ -178,7 +163,6 @@ const CreateSupplier = () => {
                                 placeholder={'Name'}
                             />
 
-                            {/* <View> */}
                             <InputForm
                                 onChangeText={handleChange('valuePhoneOffice')}
                                 onBlur={handleBlur('valuePhoneOffice')}
@@ -187,9 +171,9 @@ const CreateSupplier = () => {
                                 keyboardType="numeric"
                                 placeholder={'1234567891011'}
                             />
-                            <Button title={"Login"}
+                            <Button title={"Create Suplier"}
                                 style={styles.buttonStyle}
-                                // disabled={loginQuery.isPending}
+                                disabled={createQuery.isPending}
                                 onPress={handleSubmit} />
                         </View>
                     </ScrollView>
@@ -204,8 +188,6 @@ const styles = StyleSheet.create({
     container: {
         padding: 8,
         paddingBottom: 100
-        // marginBottom:100
-        // paddingBottom: 40
     },
     buttonStyle: {
         marginTop: 30, marginBottom: 100
