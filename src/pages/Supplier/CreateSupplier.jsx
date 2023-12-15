@@ -1,13 +1,18 @@
 import { Formik } from 'formik'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
 import Header from '../../components/molecules/Header'
+import useSupplierAPI, { createSupplierAPI } from '../../utils/api/supplier'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
 
 const CreateSupplier = () => {
-    const token = useSelector((state) =>  state.auth.token)
+    const token = useSelector((state) => state.auth.token)
+    const { createSupplierAPI } = useSupplierAPI()
+    console.log('token CreateSupplier', token)
 
     const initialValues = {
         name: '',
@@ -34,20 +39,64 @@ const CreateSupplier = () => {
         valuePhoneOffice: Yup.number(),
     })
 
-    // const balance = useSelector((state) => state.balance.value);
-    // console.log('balance', balance)
+    const datas = {
+        name: "maret",
+        address: "jln sudirman jb",
+        city: "jakarta",
+        postCode: "12345",
+        contacts: [
+            {
+                name: "mac 456",
+                contactType: "mobilePhone",
+                value: "0898765432"
+            }, {
+                name: "mac 1",
+                contactType: "officePhone",
+                value: "12345463"
+            }
+        ]
+    }
+    const createQuery = useMutation({
+        mutationFn: (valueData) => {
+            console.log('valueData', valueData)
+            return createSupplierAPI(valueData, token)
+            // return createSupplierAPI(valueData, token)
+        },
+        onSuccess: (data) => {
+            console.log('onSuccess createQuery', data)
+        },
+        onError: (err) => {
+            console.log('onError createQuery', err)
+        }
+    })
+
+    // const createSupplieerrr = async (data, token) => {
+    //     return axios.post('https://mobile.dev.quadrant-si.id/developertest/Supplier',
+    //         data,
+    //         {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         }
+
+    //     )
+    //         .then((res) => console.log('res.data', res.data)).catch((err) => console.log(err))
+    // }
+
     return (
         <View >
             <Header title={"Supplier"}
                 type={"primary"}
             />
-           
+
             <Formik
                 initialValues={initialValues}
-                validationSchema={supplierSchema}
+                // validationSchema={supplierSchema}
                 onSubmit={values => {
-                    console.log('v', values)
-
+                    console.log('v', datas)
+                    // createSupplieerrr(datas, token)
+                    // createSupplierAPI(datas, token)
+                    createQuery.mutate(datas)
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
