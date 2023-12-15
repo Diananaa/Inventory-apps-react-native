@@ -1,14 +1,14 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Header from '../../components/molecules/Header'
-import InputForm from '../../components/atoms/Form/InputForm'
 import { Formik } from 'formik'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
-import { GetSupllierAPI } from '../../utils/api/supplier'
-import { getLocalStorage } from '../../utils/storage'
-// import { useSelector } from 'react-redux';
+import InputForm from '../../components/atoms/Form/InputForm'
+import Header from '../../components/molecules/Header'
 
 const CreateSupplier = () => {
+    const token = useSelector((state) =>  state.auth.token)
+
     const initialValues = {
         name: '',
         address: '',
@@ -41,6 +41,7 @@ const CreateSupplier = () => {
             <Header title={"Supplier"}
                 type={"primary"}
             />
+           
             <Formik
                 initialValues={initialValues}
                 validationSchema={supplierSchema}

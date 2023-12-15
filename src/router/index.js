@@ -10,6 +10,9 @@ import Hello from "../pages/Hello";
 import { CreateInventory, EditInventory, ListInventory } from '../pages/Inventory';
 import SplashScreen from '../pages/Splashscreen';
 import { CreateSupplier } from '../pages/Supplier';
+import { Provider } from 'react-redux'
+import { store } from '../redux/store';
+
 const Stack = createNativeStackNavigator();
 
 const queryClient = new QueryClient()
@@ -17,8 +20,8 @@ const queryClient = new QueryClient()
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        {/* <Provider store={store}> */}
+      <Provider store={store}>
+        <NavigationContainer>
           <ToastProvider>
             <Stack.Navigator>
               <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
@@ -30,8 +33,8 @@ const App = () => {
               <Stack.Screen name="Home" component={Hello} />
             </Stack.Navigator>
           </ToastProvider>
-        {/* </Provider> */}
-      </NavigationContainer>
+        </NavigationContainer>
+      </Provider>
     </QueryClientProvider>
   );
 };

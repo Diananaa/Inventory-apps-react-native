@@ -1,14 +1,18 @@
 import { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getLocalStorage } from '../utils/storage'
+import { useDispatch } from 'react-redux'
+import { setToken } from '../redux/auth'
 
 const SplashScreen = ({ navigation }) => {
+    const dispatch = useDispatch()
     useEffect(() => {
         setTimeout(() => {
             getLocalStorage('auth').then((data) => {
                 if (data === undefined || data === null) {
                     navigation.replace('Login')
                 } else {
+                    dispatch(setToken(data.token))
                     navigation.replace('CreateSupplier')
                 }
             })
