@@ -24,7 +24,7 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                         placeholder={placeholder}
                         style={styles.inputType}
                         {...props}
-                        secureTextEntry={ type === "password" ? true : false}
+                        secureTextEntry={type === "password" ? true : false}
                     />
                 </View>
                 {
@@ -37,7 +37,7 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
     }
     return (
         <View style={styles.container}>
-            {label ? <Text>{label}</Text> : null}
+            {label ? <Text style={styles.labelStyle}>{label}</Text> : null}
             <TextInput
                 onChangeText={onChangeText}
                 onBlur={onBlur}
@@ -46,6 +46,11 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                 style={styles.input}
                 {...props}
             />
+            {
+                error ? (
+                    <Text style={styles.errorStyle}>{error}</Text>
+                ) : null
+            }
         </View>
     )
 
@@ -55,7 +60,6 @@ const styles = StyleSheet.create({
         marginVertical: 4
     },
     containerType: {
-        // flex: 1,
         flexDirection: "row",
         backgroundColor: 'rgb(203 213 225)',
         borderColor: 'gray',
@@ -64,13 +68,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
-        borderWidth: 1,
+        // borderWidth: 1,
+        // borderColor: 'gray',
+        // fontSize: 14,
+        // paddingVertical: 4,
+        // paddingHorizontal: 12,
+        // borderRadius: 12,
+        // marginTop: 4
+
+        backgroundColor: 'rgb(203 213 225)',
         borderColor: 'gray',
-        fontSize: 14,
-        paddingVertical: 4,
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
         paddingHorizontal: 12,
-        borderRadius: 12,
-        marginTop: 4
+        fontSize: 16,
+
     },
     inputType: {
         fontSize: 16,

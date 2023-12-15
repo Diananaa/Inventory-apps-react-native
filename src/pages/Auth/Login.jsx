@@ -40,7 +40,7 @@ const Login = ({ navigation }) => {
             return loginApi(valueData)
         },
         onSuccess: (data) => {
-            navigation.push('ListInventory')
+            navigation.replace('ListInventory')
             setLocalStorage('auth', data)
         },
         onError: (err) => {

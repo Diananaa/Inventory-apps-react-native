@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useToast } from "react-native-toast-notifications"
 
-
 export const getLocalStorage = async (key) => {
     try {
         const jsonValue = await AsyncStorage.getItem(key);

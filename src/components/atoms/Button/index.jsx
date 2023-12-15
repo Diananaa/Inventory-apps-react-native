@@ -1,10 +1,10 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native'
-const Button = ({ title, onPress, disabled, ...props }) => {
+const Button = ({ title, onPress, disabled, style, ...props }) => {
     return (
         <TouchableOpacity onPress={onPress} disabled={disabled}
             activeOpacity={0.2}
             {...props}
-            style={styles.container(disabled)}>
+            style={[styles.container(disabled), style]}>
             <Text style={{ color: 'white', fontSize: 16 }}>{title ?? "default"}</Text>
             {
                 disabled ? (
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 8,
         paddingVertical: 12,
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         gap: 4
     })

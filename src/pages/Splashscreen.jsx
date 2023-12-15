@@ -9,7 +9,7 @@ const SplashScreen = ({ navigation }) => {
                 if (data === undefined || data === null) {
                     navigation.replace('Login')
                 } else {
-                    navigation.replace('ListInventory')
+                    navigation.replace('CreateSupplier')
                 }
             })
         }, 2000)
