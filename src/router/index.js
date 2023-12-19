@@ -9,9 +9,11 @@ import Login from '../pages/Auth/Login';
 import Hello from "../pages/Hello";
 import { CreateInventory, EditInventory, ListInventory } from '../pages/Inventory';
 import SplashScreen from '../pages/Splashscreen';
-import { CreateSupplier } from '../pages/Supplier';
+import { CreateSupplier, ListSupplier } from '../pages/Supplier';
 import { Provider } from 'react-redux'
 import { store } from '../redux/store';
+import List from '../pages/Supplier/List';
+import Useinf from '../pages/Supplier/Useinf';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,9 @@ const App = () => {
             <Stack.Navigator>
               <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+              <Stack.Screen header name="Useinf" component={Useinf} options={{ headerShown: false }} />
+              <Stack.Screen header name="ListSupplier" component={ListSupplier} options={{ headerShown: false }} />
+              <Stack.Screen header name="List" component={List} options={{ headerShown: false }} />
               <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="EditInventory" component={EditInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="CreateInventory" component={CreateInventory} options={{ headerShown: false }} />

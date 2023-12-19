@@ -4,5 +4,5 @@ import ListInventory from "./ListInventory";
 export {
     CreateInventory,
     EditInventory,
-    ListInventory
+    ListInventory,
 }

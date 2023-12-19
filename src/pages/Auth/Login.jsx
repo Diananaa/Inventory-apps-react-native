@@ -40,14 +40,15 @@ const Login = ({ navigation }) => {
             return loginApi(valueData)
         },
         onSuccess: (data) => {
-            navigation.replace('CreateSupplier')
+            navigation.replace('Useinf')
             setLocalStorage('auth', data)
+            console.log('save token ', data)
         },
         onError: (err) => {
             toast.show("Login is failed")
         }
     })
-
+    console.log('loginQuery', loginQuery)
     return (
         <>
             <Header

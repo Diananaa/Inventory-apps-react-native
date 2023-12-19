@@ -1,2 +1,3 @@
 import CreateSupplier from "./CreateSupplier";
-export { CreateSupplier }
+import ListSupplier from "./ListSupplier";
+export { CreateSupplier, ListSupplier }

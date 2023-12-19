@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 8,
         paddingVertical: 12,
-        // flex: 1,
         flexDirection: 'row',
         gap: 4
     })
