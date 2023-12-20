@@ -77,7 +77,7 @@ const Login = ({ navigation }) => {
                                 type={"password"}
                             />
                             <View style={styles.buttonStyle}>
-                                <Button title={"Login"} disabled={loginQuery.isPending} onPress={handleSubmit} />
+                                <Button title={"Login"} disabled={loginQuery.isLoading} onPress={handleSubmit} />
                             </View>
                         </View>
                     )}

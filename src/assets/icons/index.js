@@ -5,6 +5,9 @@ import ICphone from './icon-phone.svg'
 import ICphoneOffice from './icon-phone-office.svg'
 import ICemail from './icon-email.svg'
 import ICmaps from './icon-maps.svg'
+import ICSearch from './icon-search.svg'
+import ICClose from './icon-close.svg'
+import ICCloseDisable from './icon-close-disable.svg'
 
 export {
     ICkeyLogo,
@@ -13,5 +16,8 @@ export {
     ICphone,
     ICphoneOffice,
     ICemail,
-    ICmaps
+    ICmaps,
+    ICSearch,
+    ICClose,
+    ICCloseDisable
 }

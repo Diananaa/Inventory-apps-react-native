@@ -1,20 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastProvider } from 'react-native-toast-notifications';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 
 // page
+import { Provider } from 'react-redux';
 import Login from '../pages/Auth/Login';
 import Hello from "../pages/Hello";
 import { CreateInventory, EditInventory, ListInventory } from '../pages/Inventory';
 import SplashScreen from '../pages/Splashscreen';
 import { CreateSupplier, ListSupplier } from '../pages/Supplier';
-import { Provider } from 'react-redux'
 import { store } from '../redux/store';
-import List from '../pages/Supplier/List';
-import Useinf from '../pages/Supplier/Useinf';
-
 const Stack = createNativeStackNavigator();
 
 const queryClient = new QueryClient()
@@ -27,14 +24,12 @@ const App = () => {
           <ToastProvider>
             <Stack.Navigator>
               <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-              <Stack.Screen header name="Useinf" component={Useinf} options={{ headerShown: false }} />
+              <Stack.Screen header name="CreateSupplier" component={CreateSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListSupplier" component={ListSupplier} options={{ headerShown: false }} />
-              <Stack.Screen header name="List" component={List} options={{ headerShown: false }} />
               <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
+              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
               <Stack.Screen header name="EditInventory" component={EditInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="CreateInventory" component={CreateInventory} options={{ headerShown: false }} />
-              <Stack.Screen header name="CreateSupplier" component={CreateSupplier} options={{ headerShown: false }} />
               <Stack.Screen name="Home" component={Hello} />
             </Stack.Navigator>
           </ToastProvider>

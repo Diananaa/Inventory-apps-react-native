@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation } from 'react-query'
 import { Formik } from 'formik'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
@@ -11,7 +11,6 @@ import useSupplierAPI from '../../utils/api/supplier'
 
 const CreateSupplier = ({ navigation }) => {
     const toast = useToast();
-    const token = useSelector((state) => state.auth.token)
     const { createSupplierAPI } = useSupplierAPI()
 
     const initialValues = {
@@ -40,10 +39,11 @@ const CreateSupplier = ({ navigation }) => {
     })
     const createQuery = useMutation({
         mutationFn: (valueData) => {
-            return createSupplierAPI(valueData, token)
+            return createSupplierAPI(valueData)
         },
         onSuccess: (data) => {
-            navigation.replace('ListInventory')
+            console.log('data data', data)
+            navigation.replace('ListSupplier')
         },
         onError: (err) => {
             toast.show("Create supplier is failed")
@@ -67,17 +67,17 @@ const CreateSupplier = ({ navigation }) => {
                         postCode: datas.postCode,
                         contacts: [
                             {
-                                name: datas.nameEmail,
+                                name: datas.nameEmail ?? '-',
                                 contactType: "email",
-                                value: datas.valueEmail
+                                value: datas.valueEmail ?? '-'
                             }, {
-                                name: datas.namePhoneMobile,
+                                name: datas.namePhoneMobile ?? '-',
                                 contactType: "mobilePhone",
-                                value: datas.valuePhoneMobile
+                                value: datas.valuePhoneMobile ?? '-'
                             }, {
-                                name: datas.namePhoneOffice,
-                                contactType: "mobilePhone",
-                                value: datas.valuePhoneOffice
+                                name: datas.namePhoneOffice ?? '-',
+                                contactType: "officePhone",
+                                value: datas.valuePhoneOffice ?? '-'
                             }
                         ]
                     }
@@ -102,6 +102,8 @@ const CreateSupplier = ({ navigation }) => {
                                 error={errors.address}
                                 label={'Address'}
                                 placeholder={'Address supplier'}
+                                numberOfLines={4}
+                                multiline = {true}
                             />
                             <InputForm
                                 onChangeText={handleChange('city')}
@@ -151,7 +153,7 @@ const CreateSupplier = ({ navigation }) => {
                                 value={values.valuePhoneMobile}
                                 error={errors.valuePhoneMobile}
                                 keyboardType="numeric"
-                                placeholder={'+6281234567'}
+                                placeholder={'081234567'}
                             />
 
                             <InputForm
@@ -173,7 +175,7 @@ const CreateSupplier = ({ navigation }) => {
                             />
                             <Button title={"Create Suplier"}
                                 style={styles.buttonStyle}
-                                disabled={createQuery.isPending}
+                                disabled={createQuery.isLoading}
                                 onPress={handleSubmit} />
                         </View>
                     </ScrollView>
