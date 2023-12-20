@@ -1,24 +1,55 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import { ImgTriangle } from "../../../../assets/image"
+import { ICemail, ICphone, ICphoneOffice } from '../../../../assets/icons'
+import Row from '../../Row'
+
 const ProductListCard = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.nameStyle}>nama</Text>
-            <View style={styles.row}>
-                <Text style={styles.labelStyle}>ID</Text>
-                <Text style={styles.dscStyle}>93835</Text>
+        <View style={styles.containerStyle}>
+            <View>
+                <View>
+                    <ImgTriangle />
+                </View>
+                <View style={styles.persenContainerStyle}>
+                    <Text style={styles.persenTitleStyle}>Margin Percentage</Text>
+                    <Text style={styles.persenDescStyle}>100 %</Text>
+                </View>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ backgroundColor: 'orange', width: 'auto', height: 50, gap: 4, flexDirection: 'row' }}>
-                    <Text style={styles.typeStyle}>minuman</Text>
-                    <Text style={styles.typeStyle}>minuman</Text>
+
+            <Row style={styles.iconStyle}>
+                <ICphoneOffice />
+                <ICemail />
+                <ICphone />
+            </Row>
+
+            <View style={styles.containerQuantity}>
+                <View style={styles.positionContainerQuantity}>
+                    <Text style={styles.descQuantityStyle}>25</Text>
+                    <Text>Quantity</Text>
                 </View>
-                <Text style={styles.dscStyle}>Rp. 50000</Text>
-                {/* <View style={styles.row}>
-                    <Text style={styles.labelStyle}>Price</Text>
+            </View>
+
+            <View style={styles.containerFill}>
+                <View style={styles.positionFillContainer}>
+                    <View style={styles.fillContainer}>
+                        <Text style={styles.titleStyle} numberOfLines={1}>Asus Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius aspernatur laboriosam alias in repellendus labore sed, magnam dolorem porro earum, sunt ab excepturi nesciunt asperiores veniam reprehenderit? Ipsum, assumenda debitis.</Text>
+                        <Text style={styles.descTitleStyle} numberOfLines={1}>Asus mere Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore totam culpa possimus nostrum doloribus numquam voluptatum aut modi qui a iure explicabo, tenetur saepe nulla quis, minus cum ea molestias!k</Text>
+                        <View>
+                            <Row>
+                                <Text style={styles.descStyle}>Supplier</Text>
+                                <Text numberOfLines={1}>Nana lo</Text>
+                            </Row>
+                            <Row>
+                                <Text style={styles.descStyle}>Cost</Text>
+                                <Text numberOfLines={1}>Rp. 10.000.000</Text>
+                            </Row>
+                            <Row>
+                                <Text style={styles.descStyle}>Retail</Text>
+                                <Text numberOfLines={1}>Rp. 10.000.000</Text>
+                            </Row>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.row}>
-                    <Text style={styles.labelStyle}>Type</Text>
-                </View> */}
             </View>
 
         </View>
@@ -26,36 +57,68 @@ const ProductListCard = () => {
 }
 export default ProductListCard
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'rgb(248 250 252)',
-        borderRadius: 24,
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        marginVertical: 4
+    containerStyle: {
+        marginVertical: 4,
+        height: 170,
+        backgroundColor: '#FFEFEF'
     },
-    row: {
-        flexDirection: 'row',
-    },
-    nameStyle: {
-        color: 'rgb(55 65 81)',
-        fontSize: 18,
+    descStyle: {
         fontWeight: '600',
-        marginBottom: 8
+        fontSize: 15,
+        width: 60
     },
-    labelStyle: {
-        color: 'rgb(55 65 81)',
-        width: 50,
-        fontSize: 14,
+    descTitleStyle: {
+        fontWeight: 'normal',
+        fontSize: 16
     },
-    dscStyle: {
-        color: 'rgb(55 65 81)'
+    titleStyle: {
+        fontWeight: 'bold',
+        fontSize: 18
     },
-    typeStyle: {
-        backgroundColor: 'rgb(254 226 226)',
-        borderRadius: 12,
-        paddingVertical: 2,
-        paddingHorizontal: 12,
-        height: 20
-    }
+    fillContainer: {
+        width: '50%',
+    },
+    positionFillContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
 
+    },
+    persenTitleStyle: {
+        fontSize: 14,
+        fontWeight: '700'
+    },
+    persenContainerStyle: {
+        position: 'absolute',
+        top: 0,
+        paddingLeft: 8,
+        paddingTop: 4
+    },
+    persenDescStyle: {
+        fontSize: 20,
+        fontWeight: '900',
+        marginTop: 4
+    },
+    containerFill: {
+        marginTop: 35,
+        position: 'absolute',
+        top: 18,
+        width: '100%',
+    },
+    iconStyle: {
+        position: 'absolute',
+        right: 8, top: 8
+    },
+    containerQuantity: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        borderColor: '#991B1B',
+        borderWidth: 1,
+        width: 80
+    },
+    positionContainerQuantity: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    descQuantityStyle:{ fontSize: 24, fontWeight: '900' }
 })
