@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "react-query"
 import axios from "axios"
 import { Formik } from "formik"
 import { ScrollView, StyleSheet, View } from "react-native"
@@ -40,7 +40,7 @@ const Login = ({ navigation }) => {
             return loginApi(valueData)
         },
         onSuccess: (data) => {
-            navigation.replace('Useinf')
+            navigation.replace('ListSupplier')
             setLocalStorage('auth', data)
             console.log('save token ', data)
         },
@@ -48,7 +48,6 @@ const Login = ({ navigation }) => {
             toast.show("Login is failed")
         }
     })
-    console.log('loginQuery', loginQuery)
     return (
         <>
             <Header
