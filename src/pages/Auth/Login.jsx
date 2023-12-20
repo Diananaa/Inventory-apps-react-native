@@ -12,15 +12,12 @@ import Button from "../../components/atoms/Button"
 import InputForm from "../../components/atoms/Form/InputForm"
 import Header from "../../components/molecules/Header"
 import { loginApi } from "../../utils/api/auth"
-
-
-const fetchUser = () => {
-    const url = `https://dummyjson.com/products/1`;
-    const response = axios.get(url).then((data) => data).catch((err) => console.error(err));
-    return response
-};
+import { useDispatch } from 'react-redux'
+import { setToken } from '../../redux/auth'
 
 const Login = ({ navigation }) => {
+    const dispatch = useDispatch()
+
     const toast = useToast();
     const initialValues = {
         username: '',
@@ -31,18 +28,14 @@ const Login = ({ navigation }) => {
         password: Yup.string().min(3, "Password min 3 character").required("Password is required")
     })
 
-    const breakingNewsQuery = useQuery({
-        queryKey: ["breakingNews"],
-        queryFn: fetchUser,
-    });
     const loginQuery = useMutation({
         mutationFn: (valueData) => {
             return loginApi(valueData)
         },
         onSuccess: (data) => {
-            navigation.replace('ListSupplier')
             setLocalStorage('auth', data)
-            console.log('save token ', data)
+            dispatch(setToken(data.token))
+            navigation.replace('ListSupplier')
         },
         onError: (err) => {
             toast.show("Login is failed")
