@@ -6,18 +6,19 @@ import { ICplusLogo } from "../../assets/icons";
 import Button from "../../components/atoms/Button";
 import ProductListCard from "../../components/atoms/cards/ProductListCard";
 import Header from "../../components/molecules/Header";
+import InputSearch from '../../components/organism/InputSearch';
 
 const ListInventory = ({ navigation }) => {
 
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('auth');
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-            // error reading value
-        }
-    };
-    console.log('getDataLocal', getData().then((e)=> console.log('hasil local list', e)))
+    // const getData = async () => {
+    //     try {
+    //         const jsonValue = await AsyncStorage.getItem('auth');
+    //         return jsonValue != null ? JSON.parse(jsonValue) : null;
+    //     } catch (e) {
+    //         // error reading value
+    //     }
+    // };
+    // console.log('getDataLocal', getData().then((e)=> console.log('hasil local list', e)))
     return (
         <View style={styles.container}>
             <Header
@@ -25,6 +26,7 @@ const ListInventory = ({ navigation }) => {
                 type={"primary"}
             />
             <View>
+                <InputSearch />
                 <ScrollView>
                     <ProductListCard />
                     <ProductListCard />
