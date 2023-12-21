@@ -19,6 +19,7 @@ const ListInventory = ({ navigation }) => {
     } = useInfiniteQuery('getListInventory', ({ pageParam = 0 }) => getListInventoryAPI(pageParam), {
         getNextPageParam: (lastPage) => lastPage.page + 1,
     });
+    console.log('dataaa', data)
     return (
         <View style={styles.container}>
             <Header
@@ -36,7 +37,7 @@ const ListInventory = ({ navigation }) => {
                         <View style={{ paddingBottom: 150 }}>
                             <FlatList
                                 data={data?.pages?.flatMap((page) => page?.data)}
-                                renderItem={({ item }) => <ProductListCard data={item} />}
+                                renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
                                 keyExtractor={(datas, index) => index?.toString()}
                                 onEndReached={() => {
                                     if (hasNextPage && !isFetchingNextPage) {

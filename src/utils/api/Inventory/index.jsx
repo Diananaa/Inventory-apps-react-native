@@ -15,7 +15,19 @@ const useInventoryAPI = () => {
             })
         return response.data;
     }
-    return { getListInventoryAPI }
+
+    const createInventoryAPI = async (value) => {
+        const response = await axios.post(`https://mobile.dev.quadrant-si.id/developertest/InventoryItem`,
+            value,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+        return response.data
+    }
+    return { getListInventoryAPI, createInventoryAPI }
 }
 
 export default useInventoryAPI
