@@ -1,24 +1,24 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ICplusLogo } from "../../assets/icons";
 
 // components
-import Button from "../../components/atoms/Button";
+import { useInfiniteQuery } from 'react-query';
 import ProductListCard from "../../components/atoms/cards/ProductListCard";
 import Header from "../../components/molecules/Header";
 import InputSearch from '../../components/organism/InputSearch';
+import useInventoryAPI from '../../utils/api/Inventory';
 
 const ListInventory = ({ navigation }) => {
-
-    // const getData = async () => {
-    //     try {
-    //         const jsonValue = await AsyncStorage.getItem('auth');
-    //         return jsonValue != null ? JSON.parse(jsonValue) : null;
-    //     } catch (e) {
-    //         // error reading value
-    //     }
-    // };
-    // console.log('getDataLocal', getData().then((e)=> console.log('hasil local list', e)))
+    const { getListInventoryAPI } = useInventoryAPI()
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+    } = useInfiniteQuery('getListInventory', ({ pageParam = 0 }) => getListInventoryAPI(pageParam), {
+        getNextPageParam: (lastPage) => lastPage.page + 1,
+    });
     return (
         <View style={styles.container}>
             <Header
@@ -27,15 +27,27 @@ const ListInventory = ({ navigation }) => {
             />
             <View>
                 <InputSearch />
-                <ScrollView>
-                    <ProductListCard />
-                    <ProductListCard />
-                    <ProductListCard />
-                    <ProductListCard />
-                    <ProductListCard />
-
-                    <Button title={"Next Page"} onPress={() => navigation.navigate('Home')} />
-                </ScrollView>
+                {
+                    data?.pages[0].data.length < 0 ? (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', height: 300 }}>
+                            <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
+                        </View>
+                    ) : (
+                        <View style={{ paddingBottom: 150 }}>
+                            <FlatList
+                                data={data?.pages?.flatMap((page) => page?.data)}
+                                renderItem={({ item }) => <ProductListCard data={item} />}
+                                keyExtractor={(datas, index) => index?.toString()}
+                                onEndReached={() => {
+                                    if (hasNextPage && !isFetchingNextPage) {
+                                        fetchNextPage();
+                                    }
+                                }}
+                                ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+                            />
+                        </View>
+                    )
+                }
             </View>
             <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.3} onPress={() => navigation.navigate("CreateInventory")}>
                 <ICplusLogo width={24} height={24} style={styles.iconPlus} fill="white" />

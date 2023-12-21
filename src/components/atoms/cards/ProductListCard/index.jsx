@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ImgTriangle } from "../../../../assets/image"
 import { ICemail, ICphone, ICphoneOffice } from '../../../../assets/icons'
 import Row from '../../Row'
+import { useConvertRupiah } from '../../../../hooks/useConvertRupiah'
 
-const ProductListCard = () => {
+const ProductListCard = ({ data }) => {
     return (
         <View style={styles.containerStyle}>
             <View>
@@ -12,7 +13,7 @@ const ProductListCard = () => {
                 </View>
                 <View style={styles.persenContainerStyle}>
                     <Text style={styles.persenTitleStyle}>Margin Percentage</Text>
-                    <Text style={styles.persenDescStyle}>100 %</Text>
+                    <Text style={styles.persenDescStyle}>{data?.marginPercentage} %</Text>
                 </View>
             </View>
 
@@ -24,7 +25,7 @@ const ProductListCard = () => {
 
             <View style={styles.containerQuantity}>
                 <View style={styles.positionContainerQuantity}>
-                    <Text style={styles.descQuantityStyle}>25</Text>
+                    <Text style={styles.descQuantityStyle}>{data?.qty ?? 0}</Text>
                     <Text>Quantity</Text>
                 </View>
             </View>
@@ -32,26 +33,25 @@ const ProductListCard = () => {
             <View style={styles.containerFill}>
                 <View style={styles.positionFillContainer}>
                     <View style={styles.fillContainer}>
-                        <Text style={styles.titleStyle} numberOfLines={1}>Asus Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius aspernatur laboriosam alias in repellendus labore sed, magnam dolorem porro earum, sunt ab excepturi nesciunt asperiores veniam reprehenderit? Ipsum, assumenda debitis.</Text>
-                        <Text style={styles.descTitleStyle} numberOfLines={1}>Asus mere Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore totam culpa possimus nostrum doloribus numquam voluptatum aut modi qui a iure explicabo, tenetur saepe nulla quis, minus cum ea molestias!k</Text>
+                        <Text style={styles.titleStyle} numberOfLines={1}>{data.name}</Text>
+                        <Text style={styles.descTitleStyle} numberOfLines={1}>{data.sku}</Text>
                         <View>
                             <Row>
                                 <Text style={styles.descStyle}>Supplier</Text>
-                                <Text numberOfLines={1}>Nana lo</Text>
+                                <Text numberOfLines={1}>{data?.supplier?.name}</Text>
                             </Row>
                             <Row>
                                 <Text style={styles.descStyle}>Cost</Text>
-                                <Text numberOfLines={1}>Rp. 10.000.000</Text>
+                                <Text numberOfLines={1}>{useConvertRupiah(data?.costPrice)}</Text>
                             </Row>
                             <Row>
                                 <Text style={styles.descStyle}>Retail</Text>
-                                <Text numberOfLines={1}>Rp. 10.000.000</Text>
+                                <Text numberOfLines={1}>{useConvertRupiah(data?.retailPrice)}</Text>
                             </Row>
                         </View>
                     </View>
                 </View>
             </View>
-
         </View>
     )
 }
@@ -120,5 +120,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    descQuantityStyle:{ fontSize: 24, fontWeight: '900' }
+    descQuantityStyle: { fontSize: 24, fontWeight: '900' }
 })
