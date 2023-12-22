@@ -6,6 +6,15 @@ const useInventoryAPI = () => {
     const token = useSelector((state) => state.auth.token);
     console.log('token', token)
 
+    const getSearchInventoryAPI = async (searchQuery = '') => {
+        const response = await axios.get(`https://mobile.dev.quadrant-si.id/developertest/InventoryItem/inquiry/1/99999?name=${searchQuery}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        return response.data;
+    }
     const getListInventoryAPI = async (pageParam = 0) => {
         const response = await axios.get(`https://mobile.dev.quadrant-si.id/developertest/InventoryItem/inquiry/${pageParam}/5`,
             {
@@ -27,7 +36,7 @@ const useInventoryAPI = () => {
         )
         return response.data
     }
-    return { getListInventoryAPI, createInventoryAPI }
+    return { getListInventoryAPI, createInventoryAPI, getSearchInventoryAPI }
 }
 
 export default useInventoryAPI
