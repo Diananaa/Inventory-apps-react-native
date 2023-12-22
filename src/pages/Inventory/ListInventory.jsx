@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ICplusLogo } from "../../assets/icons";
 
 // components
@@ -9,6 +9,7 @@ import InputSearch from '../../components/organism/InputSearch';
 import useInventoryAPI from '../../utils/api/Inventory';
 import { useEffect, useState } from "react";
 import _ from 'lodash';
+import { imgDataNotFound } from "../../assets/image";
 
 const ListInventory = ({ navigation }) => {
     const { getListInventoryAPI, getSearchInventoryAPI } = useInventoryAPI()
@@ -21,7 +22,6 @@ const ListInventory = ({ navigation }) => {
 
     const {
         data: dataSearch,
-        isFetching: isFetchingSearch,
     } = useQuery(['search', debouncedQuery], () => getSearchInventoryAPI(debouncedQuery), {
         enabled: !!debouncedQuery
     });
@@ -35,27 +35,11 @@ const ListInventory = ({ navigation }) => {
         data: dataList,
         fetchNextPage,
         hasNextPage,
-        isFetching,
+        isFetching: isFetchingList,
         isFetchingNextPage,
     } = useInfiniteQuery('getListInventory', ({ pageParam = 0 }) => getListInventoryAPI(pageParam), {
         getNextPageParam: (lastPage) => lastPage.page + 1,
     });
-
-    console.log('dataList', dataList)
-    // const PostList = ({ searchQuery }) => {
-    //     const {
-    //         data,
-    //         fetchNextPage,
-    //         hasNextPage,
-    //         isFetching,
-    //         isFetchingNextPage,
-    //         isError,
-    //         error,
-    //     } = useInfiniteQuery(['posts', searchQuery], ({ pageParam = 0 }) => fetchPosts(pageParam, searchQuery), {
-    //         getNextPageParam: (lastPage) => lastPage.nextPage,
-    //     });
-    // }
-
     return (
         <View style={styles.container}>
             <Header
@@ -67,14 +51,40 @@ const ListInventory = ({ navigation }) => {
                     value={searchQuery}
                     onChangeText={(e) => setSearchQuery(e)}
                 />
-
+                {/* handle error data search */}
                 {
-                    dataList?.pages[0].data.length < 0 ? (
+                    searchQuery !== '' && dataSearch?.data.length < 1 && (
                         <View style={{ alignItems: 'center', justifyContent: 'center', height: 300 }}>
                             <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
                         </View>
-                    ) : (
-                        <View style={{ paddingBottom: 150 }}>
+                    )
+                }
+
+                {/* handle error data list */}
+                {
+                    searchQuery === '' && dataList?.pages[0].data.length < 1 && (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', height: 300 }}>
+                            <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
+                        </View>
+                    )
+                }
+
+                {/* mapping data search */}
+                <View style={{ paddingBottom: 150 }}>
+                    {
+                        dataSearch?.data.length > 0 && (
+                            <View style={{ paddingBottom: 150 }}>
+                                <FlatList
+                                    data={dataSearch?.data}
+                                    renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
+                                    keyExtractor={(datas, index) => index?.toString()}
+                                />
+                            </View>
+                        )
+                    }
+                    {/* mapping data list */}
+                    {
+                        searchQuery === '' && dataList?.pages[0].data.length > 0 && (
                             <FlatList
                                 data={dataList?.pages?.flatMap((page) => page?.data)}
                                 renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
@@ -84,32 +94,11 @@ const ListInventory = ({ navigation }) => {
                                         fetchNextPage();
                                     }
                                 }}
-                                ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
+                                ListFooterComponent={isFetchingList ? <ActivityIndicator /> : null}
                             />
-                        </View>
-                    )
-                }
-
-                {/* {isFetchingSearch ?
-                    <View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                        <ActivityIndicator />
-                    </View>
-                    : null}
-                {
-                    dataSearch?.data.length < 0 ? (
-                        <View style={{ alignItems: 'center', justifyContent: 'center', height: 300 }}>
-                            <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
-                        </View>
-                    ) : (
-                        <View style={{ paddingBottom: 150 }}>
-                            <FlatList
-                                data={dataSearch?.data}
-                                renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
-                                keyExtractor={(datas, index) => index?.toString()}
-                            />
-                        </View>
-                    )
-                } */}
+                        )
+                    }
+                </View>
             </View>
             <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.3} onPress={() => navigation.navigate("CreateInventory")}>
                 <ICplusLogo width={24} height={24} style={styles.iconPlus} fill="white" />
