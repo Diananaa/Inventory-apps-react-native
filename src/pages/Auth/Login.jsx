@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
         onSuccess: (data) => {
             setLocalStorage('auth', data)
             dispatch(setToken(data.token))
-            navigation.replace('ListInventory')
+            navigation.replace('CreateInventory')
         },
         onError: (err) => {
             toast.show("Login is failed")

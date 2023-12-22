@@ -24,12 +24,12 @@ const App = () => {
           <ToastProvider>
             <Stack.Navigator>
               <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+              <Stack.Screen header name="CreateInventory" component={CreateInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="CreateSupplier" component={CreateSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListSupplier" component={ListSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
               <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
               <Stack.Screen header name="EditInventory" component={EditInventory} options={{ headerShown: false }} />
-              <Stack.Screen header name="CreateInventory" component={CreateInventory} options={{ headerShown: false }} />
               <Stack.Screen name="Home" component={Hello} />
             </Stack.Navigator>
           </ToastProvider>

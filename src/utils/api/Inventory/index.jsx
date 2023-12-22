@@ -7,7 +7,7 @@ const useInventoryAPI = () => {
     console.log('token', token)
 
     const getSearchInventoryAPI = async (searchQuery = '') => {
-        const response = await axios.get(`https://mobile.dev.quadrant-si.id/developertest/InventoryItem/inquiry/1/99999?name=${searchQuery}`,
+        const response = await axios.get(`https://mobile.dev.quadrant-si.id/developertest/InventoryItem/inquiry/1/99999?name=${searchQuery}&sku=${searchQuery}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

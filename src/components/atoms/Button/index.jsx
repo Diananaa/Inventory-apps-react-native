@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native'
-const Button = ({ title, onPress, disabled, style, ...props }) => {
+const Button = ({ title, onPress, disabled, style,children, ...props }) => {
     return (
         <TouchableOpacity onPress={onPress} disabled={disabled}
             activeOpacity={0.2}

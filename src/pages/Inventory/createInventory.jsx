@@ -1,20 +1,20 @@
-import { useMutation } from 'react-query'
 import { Formik } from 'formik'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
-import { useSelector } from 'react-redux'
+import { useMutation } from 'react-query'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
 import Header from '../../components/molecules/Header'
 import useSupplierAPI from '../../utils/api/supplier'
 
-const CreateInventory = ({ route, navigation }) => {
-    const { data } = route.params;
+import { useState } from 'react'
+import ModalCustom from '../../components/atoms/Modal'
 
-    console.log('id id id', data)
+const CreateInventory = ({ navigation }) => {
     const toast = useToast();
     const { createSupplierAPI } = useSupplierAPI()
+    const [showModal, setModal] = useState(false);
 
     const initialValues = {
         sku: '',
@@ -25,6 +25,7 @@ const CreateInventory = ({ route, navigation }) => {
         marginPercentage: 0,
         supplierId: 0
     }
+
     const supplierSchema = Yup.object().shape({
         sku: Yup.string().required('SKU is required'),
         name: Yup.string().required('Name is required'),
@@ -45,14 +46,19 @@ const CreateInventory = ({ route, navigation }) => {
             toast.show("Create supplier is failed")
         }
     })
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <View >
             <Header
                 title={"Create Inventory"}
-                desc={`${data.name} || ${data.sku}`}
+            // desc={`${data.name} || ${data.sku}`}
             />
 
+            <Button
+                onPress={() => setModalVisible(true)}>
+                <Text style={styles.textStyle}>Show Modal</Text>
+            </Button>
             <Formik
                 initialValues={initialValues}
                 validationSchema={supplierSchema}
@@ -61,13 +67,25 @@ const CreateInventory = ({ route, navigation }) => {
                         supplierId: data,
                         ...data
                     }
-                    // createQuery.mutate(datas)
                     console.log('value', data)
                     console.log('datas value', datas)
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                     <ScrollView style={styles.container}>
+                        <ModalCustom
+                            modalVisible={modalVisible}
+                            setModalVisible={setModalVisible}
+                        >
+                            <InputForm
+                                onChangeText={handleChange('sku')}
+                                onBlur={handleBlur('sku')}
+                                value={values.sku}
+                                error={errors.sku}
+                                label={'SKU'}
+                                placeholder={'SKU serial'}
+                            />
+                        </ModalCustom>
                         <View>
                             <InputForm
                                 onChangeText={handleChange('sku')}
@@ -143,5 +161,47 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         marginTop: 30, marginBottom: 100
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+
 })
