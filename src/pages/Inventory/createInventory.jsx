@@ -1,22 +1,17 @@
 import { Formik } from 'formik'
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
-import { useInfiniteQuery, useMutation, useQueries, useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
 import Header from '../../components/molecules/Header'
 import useSupplierAPI from '../../utils/api/supplier'
-
-import { useState } from 'react'
-import ModalCustom from '../../components/atoms/Modal'
-import { ICArrowDown } from '../../assets/icons'
-import Row from '../../components/atoms/Row'
-import Select from '../../components/atoms/SelectDropdown'
+import Select from '../../components/atoms/Form/SelectDropdown'
 
 const CreateInventory = ({ navigation }) => {
     const toast = useToast();
-    const { createSupplierAPI, getListSupplierAPI, getALLSupplierAPI } = useSupplierAPI()
+    const { createSupplierAPI, getALLSupplierAPI } = useSupplierAPI()
 
     const initialValues = {
         sku: '',
@@ -25,7 +20,7 @@ const CreateInventory = ({ navigation }) => {
         retailPrice: 0,
         qty: 0,
         marginPercentage: 0,
-        supplierId: 0
+        supplierId: ''
     }
 
     const supplierSchema = Yup.object().shape({
@@ -35,6 +30,7 @@ const CreateInventory = ({ navigation }) => {
         retailPrice: Yup.number().required('Retail price is required'),
         qty: Yup.number().required('Quantity price is required'),
         marginPercentage: Yup.number().required('Margin percentage price is required'),
+        supplierId: Yup.string().required('Supplier is required'),
     })
     const createQuery = useMutation({
         mutationFn: (valueData) => {
@@ -48,25 +44,9 @@ const CreateInventory = ({ navigation }) => {
             toast.show("Create supplier is failed")
         }
     })
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectData, setSelectData] = useState('')
-
-    const [searchQuery, setSearchQuery] = useState('')
-    const [debouncedQuery, setDebouncedQuery] = useState('')
-
-    // const {
-    //     data: dataListSupplier,
-    // } = useQueries(['getAllSuplier', debouncedQuery], ()=> getALLSupplierAPI);
-
+  
     const { data, isLoading, error } = useQuery('getAllSuplier', getALLSupplierAPI);
-
-    // console.log('selectData', selectData)
-    console.log('data', data?.data)
-    const namesArray = data?.data.map(item => item.name);
-    console.log('namesArray', namesArray);
-
-    const countries = ["Egypt", "Canada", "Australia", "Ireland"]
-
+    const dataSelectSupplier = data?.data.map(item => ({ key: item.id.toString(), value: item.name }));
 
     return (
         <View >
@@ -74,38 +54,14 @@ const CreateInventory = ({ navigation }) => {
                 title={"Create Inventory"}
             // desc={`${data.name} || ${data.sku}`}
             />
-            {/* <ModalCustom
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-            >
-                <Row style={styles.inputContainer}>
-                    <TextInput
-                        onChangeText={(e) => setSelectData(e)}
-                        value={selectData}
-                        placeholder={'Select'}
-                        style={styles.selectInput}
-                    />
-                    <ICArrowDown />
-                </Row>
-                <View >
-                    <Text style={styles.descInputstyle}>hello</Text>
-                </View>
-            </ModalCustom>
-
-            <Button
-                onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Button> */}
-
-            <Select label={"Name Supplier"} data={countries} />
             <Formik
                 initialValues={initialValues}
                 validationSchema={supplierSchema}
                 onSubmit={datas => {
-                    const data = {
-                        supplierId: data,
-                        ...data
-                    }
+                    // const data = {
+                    //     supplierId: data,
+                    //     ...data
+                    // }
                     console.log('value', data)
                     console.log('datas value', datas)
                 }}
@@ -113,6 +69,13 @@ const CreateInventory = ({ navigation }) => {
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                     <ScrollView style={styles.container}>
                         <View>
+                            <Select
+                                label={"Name Supplier"}
+                                onChangeText={handleChange('supplierId')}
+                                data={dataSelectSupplier}
+                                value={values.supplierId}
+                                error={errors.supplierId}
+                            />
                             <InputForm
                                 onChangeText={handleChange('sku')}
                                 onBlur={handleBlur('sku')}
