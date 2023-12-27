@@ -68,14 +68,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
-        // borderWidth: 1,
-        // borderColor: 'gray',
-        // fontSize: 14,
-        // paddingVertical: 4,
-        // paddingHorizontal: 12,
-        // borderRadius: 12,
-        // marginTop: 4
-
         backgroundColor: 'rgb(203 213 225)',
         borderColor: 'gray',
         borderRadius: 4,
@@ -84,7 +76,6 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 12,
         fontSize: 16,
-
     },
     inputType: {
         fontSize: 16,

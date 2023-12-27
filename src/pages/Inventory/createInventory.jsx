@@ -1,7 +1,7 @@
 import { Formik } from 'formik'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
-import { useMutation } from 'react-query'
+import { useInfiniteQuery, useMutation, useQueries, useQuery } from 'react-query'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
@@ -10,11 +10,12 @@ import useSupplierAPI from '../../utils/api/supplier'
 
 import { useState } from 'react'
 import ModalCustom from '../../components/atoms/Modal'
+import { ICArrowDown } from '../../assets/icons'
+import Row from '../../components/atoms/Row'
 
 const CreateInventory = ({ navigation }) => {
     const toast = useToast();
-    const { createSupplierAPI } = useSupplierAPI()
-    const [showModal, setModal] = useState(false);
+    const { createSupplierAPI, getListSupplierAPI, getALLSupplierAPI } = useSupplierAPI()
 
     const initialValues = {
         sku: '',
@@ -47,6 +48,19 @@ const CreateInventory = ({ navigation }) => {
         }
     })
     const [modalVisible, setModalVisible] = useState(false);
+    const [selectData, setSelectData] = useState('')
+
+    const [searchQuery, setSearchQuery] = useState('')
+    const [debouncedQuery, setDebouncedQuery] = useState('')
+
+    // const {
+    //     data: dataListSupplier,
+    // } = useQueries(['getAllSuplier', debouncedQuery], ()=> getALLSupplierAPI);
+
+    const { data, isLoading, error } = useQuery('getAllSuplier', getALLSupplierAPI);
+
+    // console.log('selectData', selectData)
+    console.log('data', data)
 
     return (
         <View >
@@ -54,6 +68,23 @@ const CreateInventory = ({ navigation }) => {
                 title={"Create Inventory"}
             // desc={`${data.name} || ${data.sku}`}
             />
+            <ModalCustom
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            >
+                <Row style={styles.inputContainer}>
+                    <TextInput
+                        onChangeText={(e) => setSelectData(e)}
+                        value={selectData}
+                        placeholder={'Select'}
+                        style={styles.selectInput}
+                    />
+                    <ICArrowDown />
+                </Row>
+                <View >
+                    <Text style={styles.descInputstyle}>hello</Text>
+                </View>
+            </ModalCustom>
 
             <Button
                 onPress={() => setModalVisible(true)}>
@@ -73,19 +104,6 @@ const CreateInventory = ({ navigation }) => {
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                     <ScrollView style={styles.container}>
-                        <ModalCustom
-                            modalVisible={modalVisible}
-                            setModalVisible={setModalVisible}
-                        >
-                            <InputForm
-                                onChangeText={handleChange('sku')}
-                                onBlur={handleBlur('sku')}
-                                value={values.sku}
-                                error={errors.sku}
-                                label={'SKU'}
-                                placeholder={'SKU serial'}
-                            />
-                        </ModalCustom>
                         <View>
                             <InputForm
                                 onChangeText={handleChange('sku')}
@@ -203,5 +221,32 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
-
+    inputContainer: {
+        backgroundColor: 'rgb(203 213 225)',
+        borderColor: 'gray',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
+        paddingHorizontal: 25,
+        fontSize: 16,
+        height: 60,
+    },
+    selectInput: {
+        backgroundColor: 'orange',
+        width: '100%',
+        fontSize: 16,
+    },
+    descInputstyle: {
+        fontSize: 16, backgroundColor: "white",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        paddingVertical: 8, paddingHorizontal: 12,
+    }
 })

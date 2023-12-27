@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     },
     childrenStyle: {
         paddingHorizontal: 12,
-        paddingVertical: 18
+        paddingVertical: 18,
+        width: '100%'
     }
 });

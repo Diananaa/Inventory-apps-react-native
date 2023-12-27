@@ -26,7 +26,16 @@ const useSupplierAPI = () => {
             });
         return response.data;
     }
-    return { createSupplierAPI, getListSupplierAPI }
+    const getALLSupplierAPI = async () => {
+        const response = await axios.get(`https://mobile.dev.quadrant-si.id/developertest/Supplier/inquiry/1/999999`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+        return response.data;
+    }
+    return { createSupplierAPI, getListSupplierAPI, getALLSupplierAPI }
 }
 
 export default useSupplierAPI

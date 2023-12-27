@@ -1,23 +1,18 @@
+import ICArrowDown from './icon-arrow-down.svg'
+import ICCloseDisable from './icon-close-disable.svg'
+import ICClose from './icon-close.svg'
+import ICemail from './icon-email.svg'
+import ICmaps from './icon-maps.svg'
+import ICphoneOffice from './icon-phone-office.svg'
+import ICphone from './icon-phone.svg'
+import ICSearch from './icon-search.svg'
 import ICkeyLogo from './key.svg'
 import ICplusLogo from './plus.svg'
 import ICuserLogo from './user.svg'
-import ICphone from './icon-phone.svg'
-import ICphoneOffice from './icon-phone-office.svg'
-import ICemail from './icon-email.svg'
-import ICmaps from './icon-maps.svg'
-import ICSearch from './icon-search.svg'
-import ICClose from './icon-close.svg'
-import ICCloseDisable from './icon-close-disable.svg'
 
 export {
-    ICkeyLogo,
-    ICplusLogo,
-    ICuserLogo,
-    ICphone,
-    ICphoneOffice,
-    ICemail,
-    ICmaps,
-    ICSearch,
-    ICClose,
-    ICCloseDisable
+    ICArrowDown, ICClose,
+    ICCloseDisable, ICSearch, ICemail, ICkeyLogo, ICmaps, ICphone,
+    ICphoneOffice, ICplusLogo,
+    ICuserLogo
 }
