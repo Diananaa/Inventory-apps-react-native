@@ -5,13 +5,15 @@ import { useMutation, useQuery } from 'react-query'
 import * as Yup from "yup"
 import Button from '../../components/atoms/Button'
 import InputForm from '../../components/atoms/Form/InputForm'
-import Header from '../../components/molecules/Header'
-import useSupplierAPI from '../../utils/api/supplier'
 import Select from '../../components/atoms/Form/SelectDropdown'
+import Header from '../../components/molecules/Header'
+import useInventoryAPI from '../../utils/api/Inventory'
+import useSupplierAPI from '../../utils/api/supplier'
 
 const CreateInventory = ({ navigation }) => {
     const toast = useToast();
-    const { createSupplierAPI, getALLSupplierAPI } = useSupplierAPI()
+    const { getALLSupplierAPI } = useSupplierAPI()
+    const { createInventoryAPI } = useInventoryAPI()
 
     const initialValues = {
         sku: '',
@@ -32,19 +34,18 @@ const CreateInventory = ({ navigation }) => {
         marginPercentage: Yup.number().required('Margin percentage price is required'),
         supplierId: Yup.string().required('Supplier is required'),
     })
-    const createQuery = useMutation({
+    const createInventoryQuery = useMutation({
         mutationFn: (valueData) => {
-            return createSupplierAPI(valueData)
+            return createInventoryAPI(valueData)
         },
         onSuccess: (data) => {
-            console.log('data data', data)
-            navigation.replace('ListSupplier')
+            navigation.replace('ListInventory')
         },
         onError: (err) => {
             toast.show("Create supplier is failed")
         }
     })
-  
+
     const { data, isLoading, error } = useQuery('getAllSuplier', getALLSupplierAPI);
     const dataSelectSupplier = data?.data.map(item => ({ key: item.id.toString(), value: item.name }));
 
@@ -62,8 +63,14 @@ const CreateInventory = ({ navigation }) => {
                     //     supplierId: data,
                     //     ...data
                     // }
-                    console.log('value', data)
-                    console.log('datas value', datas)
+                    console.log('datas datas', datas)
+                    const value = {
+                        ...datas,
+                        supplierId: Number(datas.supplierId),
+                    }
+                    console.log('value value', value)
+                    createInventoryQuery.mutate(value)
+
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
@@ -132,7 +139,7 @@ const CreateInventory = ({ navigation }) => {
 
                             <Button title={"Create Inventory"}
                                 style={styles.buttonStyle}
-                                disabled={createQuery.isLoading}
+                                disabled={createInventoryQuery.isLoading}
                                 onPress={handleSubmit} />
                         </View>
                     </ScrollView>
