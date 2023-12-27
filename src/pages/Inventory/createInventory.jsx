@@ -12,6 +12,7 @@ import { useState } from 'react'
 import ModalCustom from '../../components/atoms/Modal'
 import { ICArrowDown } from '../../assets/icons'
 import Row from '../../components/atoms/Row'
+import Select from '../../components/atoms/SelectDropdown'
 
 const CreateInventory = ({ navigation }) => {
     const toast = useToast();
@@ -60,7 +61,12 @@ const CreateInventory = ({ navigation }) => {
     const { data, isLoading, error } = useQuery('getAllSuplier', getALLSupplierAPI);
 
     // console.log('selectData', selectData)
-    console.log('data', data)
+    console.log('data', data?.data)
+    const namesArray = data?.data.map(item => item.name);
+    console.log('namesArray', namesArray);
+
+    const countries = ["Egypt", "Canada", "Australia", "Ireland"]
+
 
     return (
         <View >
@@ -68,7 +74,7 @@ const CreateInventory = ({ navigation }) => {
                 title={"Create Inventory"}
             // desc={`${data.name} || ${data.sku}`}
             />
-            <ModalCustom
+            {/* <ModalCustom
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
             >
@@ -89,7 +95,9 @@ const CreateInventory = ({ navigation }) => {
             <Button
                 onPress={() => setModalVisible(true)}>
                 <Text style={styles.textStyle}>Show Modal</Text>
-            </Button>
+            </Button> */}
+
+            <Select label={"Name Supplier"} data={countries} />
             <Formik
                 initialValues={initialValues}
                 validationSchema={supplierSchema}

@@ -22,7 +22,7 @@ const ListInventory = ({ navigation }) => {
 
     const {
         data: dataSearch,
-    } = useQuery(['search', debouncedQuery], () => getSearchInventoryAPI(debouncedQuery), {
+    } = useQuery(['searchListInventory', debouncedQuery], () => getSearchInventoryAPI(debouncedQuery), {
         enabled: !!debouncedQuery
     });
 
