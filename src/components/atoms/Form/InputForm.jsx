@@ -1,5 +1,7 @@
-import { TextInput, StyleSheet, View, Text, } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TextInput, View, } from 'react-native';
 import { ICkeyLogo, ICuserLogo } from '../../../assets/icons';
+
 const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, error, ...props }) => {
     if (type) {
         return (
@@ -45,6 +47,7 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                 placeholder={placeholder}
                 style={styles.input}
                 {...props}
+                // if use number type value must is string
             />
             {
                 error ? (

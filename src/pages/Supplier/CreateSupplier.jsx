@@ -42,7 +42,6 @@ const CreateSupplier = ({ navigation }) => {
             return createSupplierAPI(valueData)
         },
         onSuccess: (data) => {
-            console.log('data data', data)
             navigation.replace('ListSupplier')
         },
         onError: (err) => {
@@ -103,7 +102,7 @@ const CreateSupplier = ({ navigation }) => {
                                 label={'Address'}
                                 placeholder={'Address supplier'}
                                 numberOfLines={4}
-                                multiline = {true}
+                                multiline={true}
                             />
                             <InputForm
                                 onChangeText={handleChange('city')}

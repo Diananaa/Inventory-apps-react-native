@@ -25,7 +25,7 @@ const CreateInventory = ({ navigation }) => {
         supplierId: ''
     }
 
-    const supplierSchema = Yup.object().shape({
+    const InventorySchema = Yup.object().shape({
         sku: Yup.string().required('SKU is required'),
         name: Yup.string().required('Name is required'),
         costPrice: Yup.number().required('Cost price is required'),
@@ -53,24 +53,16 @@ const CreateInventory = ({ navigation }) => {
         <View >
             <Header
                 title={"Create Inventory"}
-            // desc={`${data.name} || ${data.sku}`}
             />
             <Formik
                 initialValues={initialValues}
-                validationSchema={supplierSchema}
+                validationSchema={InventorySchema}
                 onSubmit={datas => {
-                    // const data = {
-                    //     supplierId: data,
-                    //     ...data
-                    // }
-                    console.log('datas datas', datas)
                     const value = {
                         ...datas,
                         supplierId: Number(datas.supplierId),
                     }
-                    console.log('value value', value)
                     createInventoryQuery.mutate(value)
-
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
