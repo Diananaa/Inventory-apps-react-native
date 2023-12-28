@@ -13,7 +13,7 @@ import { useToast } from "react-native-toast-notifications"
 
 const EditInventory = ({ route, navigation }) => {
     const { id } = route.params
-    
+
     const queryClient = useQueryClient();
     const { updateInventoryAPI, detailInventoryAPI } = useInventoryAPI()
     const { getALLSupplierAPI } = useSupplierAPI()
@@ -22,12 +22,12 @@ const EditInventory = ({ route, navigation }) => {
     const { data: itemInventory } = useQuery('editInventory', () => detailInventoryAPI(id))
     const { data: getSupplier } = useQuery('getAllSuplier', getALLSupplierAPI);
     const dataSelectSupplier = getSupplier?.data.map(item => ({ key: item.id.toString(), value: item.name }));
-
+ 
     const updateInventoryQuery = useMutation({
-        mutationFn: (valueData)=> {
+        mutationFn: (valueData) => {
             return updateInventoryAPI(valueData)
         },
-        onSuccess:(data)=> {
+        onSuccess: (data) => {
             queryClient.invalidateQueries('getListInventory')
             navigation.replace('ListInventory')
         },
@@ -45,7 +45,10 @@ const EditInventory = ({ route, navigation }) => {
         marginPercentage: itemInventory?.marginPercentage.toString() || '',
         supplierId: itemInventory?.supplier?.id ?? 0
     }
-
+    const defaultOptionSupplier = {
+        key: itemInventory?.supplier?.id.toString() || '' ,
+        value: itemInventory?.supplier?.name || '',
+    }
     const supplierSchema = Yup.object().shape({
         sku: Yup.string().required('SKU is required'),
         name: Yup.string().required('Name is required'),
@@ -89,6 +92,7 @@ const EditInventory = ({ route, navigation }) => {
                                                 data={dataSelectSupplier}
                                                 value={values.supplierId}
                                                 error={errors.supplierId}
+                                                defaultOption={defaultOptionSupplier}
                                             />
                                             <InputForm
                                                 onChangeText={handleChange('sku')}

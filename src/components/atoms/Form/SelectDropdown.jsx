@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 
-const Select = ({ label, data, onChangeText, value, error }) => {
+const Select = ({ label, data, onChangeText, value, error, defaultOption }) => {
     return (
         <View style={styles.container}>
             {label ? <Text style={styles.labelStyle}>{label}</Text> : null}
@@ -13,6 +13,7 @@ const Select = ({ label, data, onChangeText, value, error }) => {
                 boxStyles={styles.boxStyles}
                 inputStyles={styles.textStyle}
                 dropdownTextStyles={styles.textStyle}
+                defaultOption={defaultOption} //key type is string
             />
             {
                 error ? (

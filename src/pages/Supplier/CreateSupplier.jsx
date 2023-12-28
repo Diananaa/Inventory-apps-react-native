@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { Formik } from 'formik'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
@@ -12,6 +12,7 @@ import useSupplierAPI from '../../utils/api/supplier'
 const CreateSupplier = ({ navigation }) => {
     const toast = useToast();
     const { createSupplierAPI } = useSupplierAPI()
+    const queryClient = useQueryClient();
 
     const initialValues = {
         name: '',
@@ -42,6 +43,7 @@ const CreateSupplier = ({ navigation }) => {
             return createSupplierAPI(valueData)
         },
         onSuccess: (data) => {
+            queryClient.invalidateQueries('getListInventory')
             navigation.replace('ListSupplier')
         },
         onError: (err) => {
