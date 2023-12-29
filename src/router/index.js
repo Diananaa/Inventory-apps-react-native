@@ -8,9 +8,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import Login from '../pages/Auth/Login';
 import Hello from "../pages/Hello";
-import { CreateInventory, EditInventory, ListInventory } from '../pages/Inventory';
+import { CreateInventory, UpdateInventory, ListInventory } from '../pages/Inventory';
+import { CreateSupplier, ListSupplier, UpdateSupplier } from '../pages/Supplier';
 import SplashScreen from '../pages/Splashscreen';
-import { CreateSupplier, ListSupplier } from '../pages/Supplier';
 import { store } from '../redux/store';
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +29,8 @@ const App = () => {
               <Stack.Screen header name="ListSupplier" component={ListSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
               <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-              <Stack.Screen header name="EditInventory" component={EditInventory} options={{ headerShown: false }} />
+              <Stack.Screen header name="UpdateInventory" component={UpdateInventory} options={{ headerShown: false }} />
+              <Stack.Screen header name="UpdateSupplier" component={UpdateSupplier} options={{ headerShown: false }} />
               <Stack.Screen name="Home" component={Hello} />
             </Stack.Navigator>
           </ToastProvider>

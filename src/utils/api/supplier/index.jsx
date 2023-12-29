@@ -12,7 +12,7 @@ const useSupplierAPI = () => {
                     Authorization: `Bearer ${token}`
                 }
             }
-        )
+        ).catch(er => console.error(er))
         return response.data
     }
     const getListSupplierAPI = async (pageParam = 0) => {
@@ -21,7 +21,7 @@ const useSupplierAPI = () => {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            });
+            }).catch(er => console.error(er));
         return response.data;
     }
     const getALLSupplierAPI = async () => {
@@ -30,10 +30,21 @@ const useSupplierAPI = () => {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            });
+            }).catch(er => console.error(er));
         return response.data;
     }
-    return { createSupplierAPI, getListSupplierAPI, getALLSupplierAPI }
+    const updateSuplierAPI = async (value) => {
+        const response = await axios.put('https://mobile.dev.quadrant-si.id/developertest/Supplier',
+        // const response = await axios.put('/Supplier',
+            value,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).catch(er => console.error(er));
+        return response.data;
+    }
+    return { createSupplierAPI, getListSupplierAPI, getALLSupplierAPI, updateSuplierAPI }
 }
 
 export default useSupplierAPI

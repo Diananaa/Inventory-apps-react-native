@@ -6,7 +6,7 @@ import Header from '../../components/molecules/Header';
 import useSupplierAPI from '../../utils/api/supplier';
 import { imgDataNotFound } from '../../assets/image';
 
-const ListSupplier = () => {
+const ListSupplier = ({ navigation }) => {
     const { getListSupplierAPI } = useSupplierAPI()
     const {
         data,
@@ -31,7 +31,7 @@ const ListSupplier = () => {
                 ) : (
                     <FlatList
                         data={data?.pages?.flatMap((page) => page?.data)}
-                        renderItem={({ item }) => <SupplierList data={item} />}
+                        renderItem={({ item }) => <SupplierList data={item} navigation={navigation}/>}
                         keyExtractor={(datas, index) => index?.toString()}
                         onEndReached={() => {
                             if (hasNextPage && !isFetchingNextPage) {

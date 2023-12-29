@@ -1,40 +1,42 @@
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { ICemail, ICmaps, ICphone, ICphoneOffice } from "../../../../assets/icons"
 import Row from "../../Row"
-const SupplierList = ({ data }) => {
+const SupplierList = ({ data, navigation }) => {
     return (
-        <View style={styles.container}>
-            <Text numberOfLines={1} style={styles.title}>{data?.name}</Text>
-            <Row style={styles.containerList}>
-                <View style={styles.containerLeft}>
+        <TouchableOpacity activeOpacity={0.1} onPress={()=> navigation.navigate('UpdateSupplier', {data:data})}>
+            <View style={styles.container}>
+                <Text numberOfLines={1} style={styles.title}>{data?.name}</Text>
+                <Row style={styles.containerList}>
+                    <View style={styles.containerLeft}>
 
-                    {data?.contacts.map((contact, index) => (
-                        <Row>
-                            <View style={styles.iconStyle}>
-                                {contact.contactType === "mobilePhone" && <ICphone /> }
-                                {contact.contactType === "officePhone" && <ICphoneOffice />}
-                                {contact.contactType === "email" && <ICemail />}
-                            </View>
-                            <View>
-                                <Text numberOfLines={1}>{contact.name ?? "-"}</Text>
-                                <Text numberOfLines={1}>{contact.value ?? "-"}</Text>
-                            </View>
-                        </Row>
-                    ))}
-                </View>
+                        {data?.contacts.map((contact, index) => (
+                            <Row>
+                                <View style={styles.iconStyle}>
+                                    {contact.contactType === "mobilePhone" && <ICphone />}
+                                    {contact.contactType === "officePhone" && <ICphoneOffice />}
+                                    {contact.contactType === "email" && <ICemail />}
+                                </View>
+                                <View>
+                                    <Text numberOfLines={1}>{contact.name ?? "-"}</Text>
+                                    <Text numberOfLines={1}>{contact.value ?? "-"}</Text>
+                                </View>
+                            </Row>
+                        ))}
+                    </View>
 
-                <Row style={styles.containerRight}>
-                    <View>
-                        <ICmaps />
-                    </View>
-                    <View style={styles.mapsStyle}>
-                        <Text numberOfLines={7}>
-                            {data.address}, {data.city}, {data.postCode}
-                        </Text>
-                    </View>
+                    <Row style={styles.containerRight}>
+                        <View>
+                            <ICmaps />
+                        </View>
+                        <View style={styles.mapsStyle}>
+                            <Text numberOfLines={7}>
+                                {data.address}, {data.city}, {data.postCode}
+                            </Text>
+                        </View>
+                    </Row>
                 </Row>
-            </Row>
-        </View>
+            </View>
+        </TouchableOpacity>
     )
 }
 

@@ -8,22 +8,24 @@ import InputForm from '../../components/atoms/Form/InputForm'
 import Header from '../../components/molecules/Header'
 import useSupplierAPI from '../../utils/api/supplier'
 
-const CreateSupplier = ({ navigation }) => {
+
+const UpdateSupplier = ({ route, navigation }) => {
+    const { data } = route.params
     const toast = useToast();
-    const { createSupplierAPI } = useSupplierAPI()
+    const { updateSuplierAPI } = useSupplierAPI()
     const queryClient = useQueryClient();
 
     const initialValues = {
-        name: '',
-        address: '',
-        city: '',
-        postCode: '',
-        nameEmail: '',
-        valueEmail: '',
-        namePhoneMobile: '',
-        valuePhoneMobile: '',
-        namePhoneOffice: '',
-        valuePhoneOffice: '',
+        name: data?.name || '',
+        address: data?.address || '',
+        city: data?.city || '',
+        postCode: data?.postCode || '',
+        nameEmail: data?.contacts.find(contact => contact.contactType === 'email')?.name || '',
+        valueEmail: data?.contacts.find(contact => contact.contactType === 'email')?.value || '',
+        namePhoneMobile: data?.contacts.find(contact => contact.contactType === 'mobilePhone')?.name || '',
+        valuePhoneMobile: data?.contacts.find(contact => contact.contactType === 'mobilePhone')?.value || '',
+        namePhoneOffice: data?.contacts.find(contact => contact.contactType === 'officePhone')?.name || '',
+        valuePhoneOffice: data?.contacts.find(contact => contact.contactType === 'officePhone')?.value || '',
     }
     const supplierSchema = Yup.object().shape({
         name: Yup.string().required('Nama is required'),
@@ -37,21 +39,21 @@ const CreateSupplier = ({ navigation }) => {
         namePhoneOffice: Yup.string(),
         valuePhoneOffice: Yup.number(),
     })
-    const createQuery = useMutation({
+    const updateQuery = useMutation({
         mutationFn: (valueData) => {
-            return createSupplierAPI(valueData)
+            return updateSuplierAPI(valueData)
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries('getListInventory')
             navigation.replace('ListSupplier')
         },
         onError: (err) => {
-            toast.show("Create supplier is failed")
+            toast.show("Update supplier is failed")
         }
     })
-
     const onSubmit = (datas) => {
-        const data = {
+        const item = {
+            ...data,
             name: datas.name,
             address: datas.address,
             city: datas.city,
@@ -72,7 +74,7 @@ const CreateSupplier = ({ navigation }) => {
                 }
             ]
         }
-        createQuery.mutate(data)
+        updateQuery.mutate(item)
     }
     return (
         <View >
@@ -174,9 +176,9 @@ const CreateSupplier = ({ navigation }) => {
                                 keyboardType="numeric"
                                 placeholder={'1234567891011'}
                             />
-                            <Button title={"Create Suplier"}
+                            <Button title={"Update Suplier"}
                                 style={styles.buttonStyle}
-                                disabled={createQuery.isLoading}
+                                disabled={updateQuery.isLoading}
                                 onPress={handleSubmit} />
                         </View>
                     </ScrollView>
@@ -185,7 +187,7 @@ const CreateSupplier = ({ navigation }) => {
         </View>
     )
 }
-export default CreateSupplier
+export default UpdateSupplier
 
 const styles = StyleSheet.create({
     container: {
