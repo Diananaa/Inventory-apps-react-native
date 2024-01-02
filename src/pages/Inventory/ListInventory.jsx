@@ -70,10 +70,11 @@ const ListInventory = ({ navigation }) => {
                 }
 
                 {/* mapping data search */}
-                <View style={{ paddingBottom: 150 }}>
+                <View >
                     {
                         dataSearch?.data.length > 0 && (
                             <View style={{ paddingBottom: 150 }}>
+                            {/* <View style={{ paddingBottom: 150 }}> */}
                                 <FlatList
                                     data={dataSearch?.data}
                                     renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
