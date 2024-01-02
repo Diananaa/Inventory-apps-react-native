@@ -1,28 +1,26 @@
-import { Formik } from 'formik';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
-import Button from "../components/atoms/Button";
-import InputForm from '../components/atoms/Form/InputForm';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useQuery } from 'react-query';
 import { ICLogout } from '../assets/icons';
-import Row from '../components/atoms/Row';
 import { ImgUserNull } from '../assets/image';
-import InputSearch from '../components/organism/InputSearch';
-import { useInfiniteQuery, useQuery } from 'react-query';
-import useInventoryAPI from '../utils/api/Inventory';
-import ProductListCard from '../components/atoms/cards/ProductListCard';
-import useSupplierAPI from '../utils/api/supplier';
+import Row from '../components/atoms/Row';
 import SupplierList from '../components/atoms/cards/SupplierListCard';
+import InputSearch from '../components/organism/InputSearch';
+import useInventoryAPI from '../utils/api/Inventory';
+import useSupplierAPI from '../utils/api/supplier';
+import { CardSkeleton } from "../components/molecules/Skeleton";
+import ProductListCard from "../components/atoms/cards/ProductListCard";
 
 const Home = ({ navigation }) => {
     const { getListInventoryAPI } = useInventoryAPI()
     const { getListSupplierAPI } = useSupplierAPI()
     const {
-        data: dataListInventory
+        data: dataListInventory, isLoading: isLoadingInventory
     } = useQuery('getInventoryHome', () => getListInventoryAPI({ pageParam: 1, size: 1 }));
 
     const {
-        data: dataListSupplier
+        data: dataListSupplier, isLoading: isLoadingSupplier
     } = useQuery('getListSupplierHome', () => getListSupplierAPI({ pageParam: 1, size: 1 }))
-    console.log('dataListSupplier', dataListSupplier)
+
     return (
         <View>
             <View style={style.container}>
@@ -48,24 +46,54 @@ const Home = ({ navigation }) => {
             <View style={{ marginHorizontal: 8 }}>
                 <Row style={{ justifyContent: 'space-between' }}>
                     <Text style={style.textTitleStyle}>Supplier</Text>
-                    <Text>See all</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('ListSupplier')}>
+                        <Text>See all</Text>
+                    </TouchableOpacity>
                 </Row>
-                <FlatList
-                    data={dataListInventory?.data}
-                    renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
-                    keyExtractor={(datas, index) => index?.toString()}
-                />
+                {
+                    isLoadingSupplier && (
+                        <View>
+                            <CardSkeleton />
+                        </View>
+                    )
+                }{
+                    !isLoadingSupplier && dataListSupplier?.data ? (
+                        <FlatList
+                            data={dataListSupplier?.data}
+                            renderItem={({ item }) => <SupplierList data={item} navigation={navigation} />}
+                            keyExtractor={(datas, index) => index?.toString()}
+                        />
+                    ) : (
+                        <Text>Data is null</Text>
+                    )
+                }
+
             </View>
             <View style={{ marginHorizontal: 8, marginTop: 20 }}>
                 <Row style={{ justifyContent: 'space-between' }}>
                     <Text style={style.textTitleStyle}>Item</Text>
-                    <Text>See all</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('ListInventory')}>
+                        <Text>See all</Text>
+                    </TouchableOpacity>
                 </Row>
-                <FlatList
-                    data={dataListSupplier?.data}
-                    renderItem={({ item }) => <SupplierList data={item} navigation={navigation} />}
-                    keyExtractor={(datas, index) => index?.toString()}
-                />
+                {
+                    isLoadingInventory && (
+                        <View>
+                            <CardSkeleton />
+                        </View>
+                    )
+                }{
+                    !isLoadingInventory && dataListInventory?.data ? (
+                        <FlatList
+                            data={dataListInventory?.data}
+                            renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
+                            keyExtractor={(datas, index) => index?.toString()}
+                        />
+                    ) : (
+                        <Text>Data is null</Text>
+                    )
+                }
+
             </View>
         </View>
     )

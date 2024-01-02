@@ -3,8 +3,8 @@ import { ICemail, ICmaps, ICphone, ICphoneOffice } from "../../../../assets/icon
 import Row from "../../Row"
 const SupplierList = ({ data, navigation }) => {
     return (
-        <TouchableOpacity activeOpacity={0.1} onPress={()=> navigation.navigate('UpdateSupplier', {data:data})}>
-            <View style={styles.container}>
+        <View style={styles.container}>
+            <TouchableOpacity onPress={() => navigation.navigate('UpdateSupplier', { data: data })}>
                 <Text numberOfLines={1} style={styles.title}>{data?.name}</Text>
                 <Row style={styles.containerList}>
                     <View style={styles.containerLeft}>
@@ -35,8 +35,8 @@ const SupplierList = ({ data, navigation }) => {
                         </View>
                     </Row>
                 </Row>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
     )
 }
 
