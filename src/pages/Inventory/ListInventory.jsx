@@ -50,6 +50,7 @@ const ListInventory = ({ navigation }) => {
                 <InputSearch
                     value={searchQuery}
                     onChangeText={(e) => setSearchQuery(e)}
+                    onReset={()=> setSearchQuery(' ')}
                 />
                 {/* handle error data search */}
                 {
@@ -74,7 +75,6 @@ const ListInventory = ({ navigation }) => {
                     {
                         dataSearch?.data.length > 0 && (
                             <View style={{ paddingBottom: 150 }}>
-                            {/* <View style={{ paddingBottom: 150 }}> */}
                                 <FlatList
                                     data={dataSearch?.data}
                                     renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}

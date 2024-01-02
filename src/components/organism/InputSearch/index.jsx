@@ -1,23 +1,33 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
-import { ICClose, ICSearch } from "../../../assets/icons";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { ICClose, ICCloseDisable, ICSearch } from "../../../assets/icons";
 import Row from "../../atoms/Row";
 
-const InputSearch = React.memo(({ onChangeText, onBlur, value }) => {
+const InputSearch = ({ onChangeText, onBlur, value, onReset }) => {
     return (
         <Row style={style.containerStyle}>
             <ICSearch />
+
             <TextInput
                 placeholder="Search"
                 style={{ width: '80%' }}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
                 value={value}
+
             />
-            <ICClose />
+
+            {value ? (
+                <TouchableOpacity onPress={onReset}>
+                    <ICClose />
+                </TouchableOpacity>
+            ) :
+                <ICCloseDisable />
+            }
+
         </Row>
     );
-});
+};
 
 const style = StyleSheet.create({
     containerStyle: {

@@ -1,7 +1,7 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from 'react-query';
 import { ICLogout } from '../assets/icons';
-import { ImgUserNull } from '../assets/image';
+import { ImgUserNull, imgDataNotFound } from '../assets/image';
 import Row from '../components/atoms/Row';
 import SupplierList from '../components/atoms/cards/SupplierListCard';
 import InputSearch from '../components/organism/InputSearch';
@@ -9,9 +9,15 @@ import useInventoryAPI from '../utils/api/Inventory';
 import useSupplierAPI from '../utils/api/supplier';
 import { CardSkeleton } from "../components/molecules/Skeleton";
 import ProductListCard from "../components/atoms/cards/ProductListCard";
+import _ from 'lodash';
+import { useEffect, useState } from "react";
+
 
 const Home = ({ navigation }) => {
-    const { getListInventoryAPI } = useInventoryAPI()
+    const [searchQuery, setSearchQuery] = useState('')
+    const [debouncedQuery, setDebouncedQuery] = useState('')
+
+    const { getListInventoryAPI, getSearchInventoryAPI } = useInventoryAPI()
     const { getListSupplierAPI } = useSupplierAPI()
     const {
         data: dataListInventory, isLoading: isLoadingInventory
@@ -20,6 +26,21 @@ const Home = ({ navigation }) => {
     const {
         data: dataListSupplier, isLoading: isLoadingSupplier
     } = useQuery('getListSupplierHome', () => getListSupplierAPI({ pageParam: 1, size: 1 }))
+
+    const debouncedSearch = _.debounce(value => {
+        setDebouncedQuery(value)
+    }, 1000);
+
+    const {
+        data: dataSearch,
+    } = useQuery(['searchListInventory', debouncedQuery], () => getSearchInventoryAPI(debouncedQuery), {
+        enabled: !!debouncedQuery
+    });
+
+    useEffect(() => {
+        debouncedSearch(searchQuery)
+        return () => debouncedSearch.cancel()
+    }, [searchQuery])
 
     return (
         <View>
@@ -39,62 +60,101 @@ const Home = ({ navigation }) => {
             </View>
             <View style={style.searchStyle}>
                 <InputSearch
-                // value={searchQuery}
-                // onChangeText={(e) => setSearchQuery(e)}
+                    value={searchQuery}
+                    onChangeText={(e) => setSearchQuery(e)}
+                    onReset={() => setSearchQuery('')}
                 />
             </View>
-            <View style={{ marginHorizontal: 8 }}>
-                <Row style={{ justifyContent: 'space-between' }}>
-                    <Text style={style.textTitleStyle}>Supplier</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('ListSupplier')}>
-                        <Text>See all</Text>
-                    </TouchableOpacity>
-                </Row>
+
+            {/* handle error data search */}
+            {
+                searchQuery !== '' && dataSearch?.data.length < 1 && (
+                    <View style={{ alignItems: 'center', justifyContent: 'center', height: 300 }}>
+                        <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
+                    </View>
+                )
+            }
+
+            <ScrollView >
+                {/* mapping data search */}
                 {
-                    isLoadingSupplier && (
-                        <View>
-                            <CardSkeleton />
+                    searchQuery !== '' && dataSearch?.data.length > 0 && (
+                        <View style={{ paddingBottom: 150 }}>
+                            <FlatList
+                                data={dataSearch?.data}
+                                renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
+                                keyExtractor={(datas, index) => index?.toString()}
+                            />
                         </View>
                     )
-                }{
-                    !isLoadingSupplier && dataListSupplier?.data ? (
-                        <FlatList
-                            data={dataListSupplier?.data}
-                            renderItem={({ item }) => <SupplierList data={item} navigation={navigation} />}
-                            keyExtractor={(datas, index) => index?.toString()}
-                        />
-                    ) : (
-                        <Text>Data is null</Text>
+                }
+                {/* mapping data list */}
+                {
+                    searchQuery === '' && (
+                        // searchQuery === '' && dataListInventory?.data?.length > 0 && (
+                        <View>
+                            <View style={{ marginHorizontal: 8 }}>
+                                <Row style={{ justifyContent: 'space-between' }}>
+                                    <Text style={style.textTitleStyle}>Supplier</Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('ListSupplier')}>
+                                        <Text>See all</Text>
+                                    </TouchableOpacity>
+                                </Row>
+                                {
+                                    isLoadingSupplier && (
+                                        <View>
+                                            <CardSkeleton />
+                                        </View>
+                                    )
+                                }{
+                                    !isLoadingSupplier && dataListSupplier?.data ? (
+                                        <FlatList
+                                            data={dataListSupplier?.data}
+                                            renderItem={({ item }) => <SupplierList data={item} navigation={navigation} />}
+                                            keyExtractor={(datas, index) => index?.toString()}
+                                        />
+                                    ) : (
+                                        <Text>Data is null</Text>
+                                    )
+                                }
+
+                            </View>
+                            <View style={{ marginHorizontal: 8, marginTop: 20 }}>
+                                <Row style={{ justifyContent: 'space-between' }}>
+                                    <Text style={style.textTitleStyle}>Item</Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('ListInventory')}>
+                                        <Text>See all</Text>
+                                    </TouchableOpacity>
+                                </Row>
+                                {
+                                    isLoadingInventory && (
+                                        <View>
+                                            <CardSkeleton />
+                                        </View>
+                                    )
+                                }{
+                                    !isLoadingInventory && dataListInventory?.data ? (
+                                        <FlatList
+                                            data={dataListInventory?.data}
+                                            renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
+                                            keyExtractor={(datas, index) => index?.toString()}
+                                        />
+                                    ) : (
+                                        <Text>Data is null</Text>
+                                    )
+                                }
+
+                            </View>
+                        </View>
                     )
                 }
 
-            </View>
-            <View style={{ marginHorizontal: 8, marginTop: 20 }}>
-                <Row style={{ justifyContent: 'space-between' }}>
-                    <Text style={style.textTitleStyle}>Item</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('ListInventory')}>
-                        <Text>See all</Text>
-                    </TouchableOpacity>
-                </Row>
-                {
-                    isLoadingInventory && (
-                        <View>
-                            <CardSkeleton />
-                        </View>
-                    )
-                }{
-                    !isLoadingInventory && dataListInventory?.data ? (
-                        <FlatList
-                            data={dataListInventory?.data}
-                            renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
-                            keyExtractor={(datas, index) => index?.toString()}
-                        />
-                    ) : (
-                        <Text>Data is null</Text>
-                    )
-                }
 
-            </View>
+            </ScrollView>
+
+
+
+
         </View>
     )
 }
