@@ -9,10 +9,12 @@ import ICSearch from './icon-search.svg'
 import ICkeyLogo from './key.svg'
 import ICplusLogo from './plus.svg'
 import ICuserLogo from './user.svg'
+import ICLogout from './icon-logout.svg'
 
 export {
     ICArrowDown, ICClose,
     ICCloseDisable, ICSearch, ICemail, ICkeyLogo, ICmaps, ICphone,
     ICphoneOffice, ICplusLogo,
-    ICuserLogo
+    ICuserLogo,
+    ICLogout
 }

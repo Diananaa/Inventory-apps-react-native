@@ -6,7 +6,7 @@ import { useConvertRupiah } from '../../../../hooks/useConvertRupiah'
 
 const ProductListCard = ({ data, navigation }) => {
     return (
-        <TouchableOpacity activeOpacity={0.1} onPress={()=> navigation.navigate("EditInventory", {id: data.id})}>
+        <TouchableOpacity activeOpacity={0.1} onPress={()=> navigation.navigate("UpdateInventory", {id: data.id})}>
             <View style={styles.containerStyle}>
                 <View>
                     <View>

@@ -14,8 +14,8 @@ const useInventoryAPI = () => {
             }).catch(er => console.error(er))
         return response.data;
     }
-    const getListInventoryAPI = async (pageParam = 0) => {
-        const response = await axios.get(`/InventoryItem/inquiry/${pageParam}/5`,
+    const getListInventoryAPI = async ({ pageParam = 0, size = 5 }) => {
+        const response = await axios.get(`/InventoryItem/inquiry/${pageParam}/${size}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

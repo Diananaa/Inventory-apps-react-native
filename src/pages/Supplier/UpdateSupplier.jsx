@@ -44,8 +44,9 @@ const UpdateSupplier = ({ route, navigation }) => {
             return updateSuplierAPI(valueData)
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries('getListInventory')
-            navigation.replace('ListSupplier')
+            queryClient.invalidateQueries('getListSupplier')
+            queryClient.invalidateQueries('getListSupplierHome')
+            navigation.goBack()
         },
         onError: (err) => {
             toast.show("Update supplier is failed")

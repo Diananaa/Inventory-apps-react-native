@@ -15,8 +15,8 @@ const useSupplierAPI = () => {
         ).catch(er => console.error(er))
         return response.data
     }
-    const getListSupplierAPI = async (pageParam = 0) => {
-        const response = await axios.get(`/Supplier/inquiry/${pageParam}/5`,
+    const getListSupplierAPI = async ({ pageParam = 0, size = 5 }) => {
+        const response = await axios.get(`/Supplier/inquiry/${pageParam}/${size}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -35,7 +35,6 @@ const useSupplierAPI = () => {
     }
     const updateSuplierAPI = async (value) => {
         const response = await axios.put('https://mobile.dev.quadrant-si.id/developertest/Supplier',
-        // const response = await axios.put('/Supplier',
             value,
             {
                 headers: {

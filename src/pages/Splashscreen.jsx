@@ -14,7 +14,7 @@ const SplashScreen = ({ navigation }) => {
                     navigation.replace('Login')
                 } else {
                     dispatch(setToken(data.token))
-                    navigation.replace('ListSupplier')
+                    navigation.replace('Home')
                 }
             })
         }, 2000)
