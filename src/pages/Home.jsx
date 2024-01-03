@@ -12,9 +12,12 @@ import ProductListCard from "../components/atoms/cards/ProductListCard";
 import _ from 'lodash';
 import { useEffect, useState } from "react";
 import { removeLocalStorage } from "../utils/storage";
+import getGreeting from "../hooks/getGreeting";
 
 
 const Home = ({ navigation }) => {
+    const GREETING = getGreeting();
+
     const [searchQuery, setSearchQuery] = useState('')
     const [debouncedQuery, setDebouncedQuery] = useState('')
 
@@ -59,7 +62,7 @@ const Home = ({ navigation }) => {
                 </View>
                 <Row style={style.greetingContainerStyle}>
                     <View>
-                        <Text style={[style.colorText, style.fontGreetingStyle]}>Good Morning</Text>
+                        <Text style={[style.colorText, style.fontGreetingStyle]}>{GREETING}</Text>
                         <Text style={[style.colorText, style.fontDescStyle]}>Manage Inventory Easier</Text>
                     </View>
                     <View>
