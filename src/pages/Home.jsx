@@ -20,6 +20,7 @@ const Home = ({ navigation }) => {
 
     const { getListInventoryAPI, getSearchInventoryAPI } = useInventoryAPI()
     const { getListSupplierAPI } = useSupplierAPI()
+
     const {
         data: dataListInventory, isLoading: isLoadingInventory
     } = useQuery('getInventoryHome', () => getListInventoryAPI({ pageParam: 1, size: 1 }));
@@ -86,7 +87,7 @@ const Home = ({ navigation }) => {
             {/* mapping data search */}
             {
                 searchQuery !== '' && dataSearch?.data.length > 0 && (
-                    <View style={{ paddingBottom: 150 }}>
+                    <View style={{ paddingBottom: 150, marginHorizontal:8 }}>
                         <FlatList
                             data={dataSearch?.data}
                             renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
