@@ -87,7 +87,7 @@ const Home = ({ navigation }) => {
             {/* mapping data search */}
             {
                 searchQuery !== '' && dataSearch?.data.length > 0 && (
-                    <View style={{ paddingBottom: 150, marginHorizontal:8 }}>
+                    <View style={{ paddingBottom: 150, marginHorizontal: 8 }}>
                         <FlatList
                             data={dataSearch?.data}
                             renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
@@ -114,7 +114,8 @@ const Home = ({ navigation }) => {
                                             <CardSkeleton />
                                         </View>
                                     )
-                                }{
+                                }
+                                {
                                     !isLoadingSupplier && dataListSupplier?.data ? (
                                         <FlatList
                                             data={dataListSupplier?.data}
