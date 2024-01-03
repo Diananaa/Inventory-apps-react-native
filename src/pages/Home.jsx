@@ -11,6 +11,7 @@ import { CardSkeleton } from "../components/molecules/Skeleton";
 import ProductListCard from "../components/atoms/cards/ProductListCard";
 import _ from 'lodash';
 import { useEffect, useState } from "react";
+import { removeLocalStorage } from "../utils/storage";
 
 
 const Home = ({ navigation }) => {
@@ -42,11 +43,18 @@ const Home = ({ navigation }) => {
         return () => debouncedSearch.cancel()
     }, [searchQuery])
 
+    const onLogout = () => {
+        removeLocalStorage('auth')
+        navigation.replace('Login')
+    }
+
     return (
         <View>
             <View style={style.container}>
                 <View style={{ position: 'absolute', right: 8, top: 8 }}>
-                    <ICLogout />
+                    <TouchableOpacity onPress={onLogout}>
+                        <ICLogout />
+                    </TouchableOpacity>
                 </View>
                 <Row style={style.greetingContainerStyle}>
                     <View>
@@ -75,23 +83,22 @@ const Home = ({ navigation }) => {
                 )
             }
 
-            <ScrollView >
-                {/* mapping data search */}
-                {
-                    searchQuery !== '' && dataSearch?.data.length > 0 && (
-                        <View style={{ paddingBottom: 150 }}>
-                            <FlatList
-                                data={dataSearch?.data}
-                                renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
-                                keyExtractor={(datas, index) => index?.toString()}
-                            />
-                        </View>
-                    )
-                }
-                {/* mapping data list */}
-                {
-                    searchQuery === '' && (
-                        // searchQuery === '' && dataListInventory?.data?.length > 0 && (
+            {/* mapping data search */}
+            {
+                searchQuery !== '' && dataSearch?.data.length > 0 && (
+                    <View style={{ paddingBottom: 150 }}>
+                        <FlatList
+                            data={dataSearch?.data}
+                            renderItem={({ item }) => <ProductListCard data={item} navigation={navigation} />}
+                            keyExtractor={(datas, index) => index?.toString()}
+                        />
+                    </View>
+                )
+            }
+            {/* mapping data list */}
+            {
+                searchQuery === '' && (
+                    <ScrollView >
                         <View>
                             <View style={{ marginHorizontal: 8 }}>
                                 <Row style={{ justifyContent: 'space-between' }}>
@@ -143,14 +150,14 @@ const Home = ({ navigation }) => {
                                         <Text>Data is null</Text>
                                     )
                                 }
-
                             </View>
                         </View>
-                    )
-                }
+                    </ScrollView>
+
+                )
+            }
 
 
-            </ScrollView>
 
 
 

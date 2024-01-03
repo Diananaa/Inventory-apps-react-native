@@ -1,19 +1,17 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useMutation, useQuery } from "react-query"
-import axios from "axios"
 import { Formik } from "formik"
 import { ScrollView, StyleSheet, View } from "react-native"
 import { useToast } from "react-native-toast-notifications"
+import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { setLocalStorage } from '../../utils/storage'
 
 // components
+import { useDispatch } from 'react-redux'
 import Button from "../../components/atoms/Button"
 import InputForm from "../../components/atoms/Form/InputForm"
 import Header from "../../components/molecules/Header"
-import { loginApi } from "../../utils/api/auth"
-import { useDispatch } from 'react-redux'
 import { setToken } from '../../redux/auth'
+import { loginApi } from "../../utils/api/auth"
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch()
