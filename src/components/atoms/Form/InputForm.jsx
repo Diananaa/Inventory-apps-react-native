@@ -1,8 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, TextInput, View, } from 'react-native';
-import { ICkeyLogo, ICuserLogo } from '../../../assets/icons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
+import { ICEye, ICEyeRed, ICkeyLogo, ICuserLogo } from '../../../assets/icons';
 
 const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, error, ...props }) => {
+    const [showPassword, setShowPassword] = useState(false)
     if (type) {
         return (
             <View style={{ height: 100 }}>
@@ -26,8 +27,25 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                         placeholder={placeholder}
                         style={styles.inputType}
                         {...props}
-                        secureTextEntry={type === "password" ? true : false}
+                        secureTextEntry={showPassword}
                     />
+                    {
+                        type === "password" && (
+                            <View style={{ paddingRight: 10 }}>
+                                {
+                                    showPassword ? (
+                                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                            <ICEye />
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                            <ICEyeRed />
+                                        </TouchableOpacity>
+                                    )
+                                }
+                            </View>
+                        )
+                    }
                 </View>
                 {
                     error ? (
@@ -47,7 +65,7 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                 placeholder={placeholder}
                 style={styles.input}
                 {...props}
-                // if use number type value must is string
+            // if use number type value must is string
             />
             {
                 error ? (
