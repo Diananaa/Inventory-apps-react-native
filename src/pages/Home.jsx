@@ -111,13 +111,7 @@ const Home = ({ navigation }) => {
                                         <Text>See all</Text>
                                     </TouchableOpacity>
                                 </Row>
-                                {
-                                    isLoadingSupplier && (
-                                        <View>
-                                            <CardSkeleton />
-                                        </View>
-                                    )
-                                }
+                                {isLoadingSupplier && <CardSkeleton />}
                                 {
                                     !isLoadingSupplier && dataListSupplier?.data ? (
                                         <FlatList
@@ -129,7 +123,6 @@ const Home = ({ navigation }) => {
                                         <Text>Data is null</Text>
                                     )
                                 }
-
                             </View>
                             <View style={{ marginHorizontal: 8, marginTop: 20 }}>
                                 <Row style={{ justifyContent: 'space-between' }}>
@@ -138,13 +131,8 @@ const Home = ({ navigation }) => {
                                         <Text>See all</Text>
                                     </TouchableOpacity>
                                 </Row>
+                                {isLoadingInventory && <CardSkeleton />}
                                 {
-                                    isLoadingInventory && (
-                                        <View>
-                                            <CardSkeleton />
-                                        </View>
-                                    )
-                                }{
                                     !isLoadingInventory && dataListInventory?.data ? (
                                         <FlatList
                                             data={dataListInventory?.data}
