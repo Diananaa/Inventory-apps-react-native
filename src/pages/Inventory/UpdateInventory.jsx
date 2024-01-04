@@ -28,6 +28,7 @@ const EditInventory = ({ route, navigation }) => {
             return updateInventoryAPI(valueData)
         },
         onSuccess: (data) => {
+            queryClient.invalidateQueries('detailInventoryItem')
             queryClient.invalidateQueries('getListInventory')
             queryClient.invalidateQueries('getInventoryHome')
             navigation.goBack()

@@ -8,7 +8,7 @@ const DetailInventory = ({ route, navigation }) => {
     const { id } = route.params
 
     const { detailInventoryAPI } = useInventoryAPI()
-    const { data: itemInventory } = useQuery('editInventory', () => detailInventoryAPI(id))
+    const { data: itemInventory } = useQuery('detailInventoryItem', () => detailInventoryAPI(id))
 
     return (
         <View>
