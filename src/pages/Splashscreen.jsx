@@ -9,7 +9,6 @@ const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             getLocalStorage('auth').then((data) => {
-                console.log('token splascreen', data)
                 if (data === undefined || data === null) {
                     navigation.replace('Login')
                 } else {
