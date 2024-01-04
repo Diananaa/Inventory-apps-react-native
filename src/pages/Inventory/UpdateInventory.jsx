@@ -22,7 +22,6 @@ const EditInventory = ({ route, navigation }) => {
     const { data: itemInventory } = useQuery('editInventory', () => detailInventoryAPI(id))
     const { data: getSupplier } = useQuery('getAllSuplier', getALLSupplierAPI);
     const dataSelectSupplier = getSupplier?.data.map(item => ({ key: item.id.toString(), value: item.name }));
-    console.log('itemInventory', itemInventory)
  
     const updateInventoryQuery = useMutation({
         mutationFn: (valueData) => {

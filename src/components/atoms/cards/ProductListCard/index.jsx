@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { ImgTriangle } from "../../../../assets/image"
 import { ICemail, ICphone, ICphoneOffice } from '../../../../assets/icons'
-import Row from '../../Row'
+import { ImgTriangle } from "../../../../assets/image"
 import { useConvertRupiah } from '../../../../hooks/useConvertRupiah'
+import Row from '../../Row'
 
 const ProductListCard = ({ data, navigation }) => {
     return (
-        <TouchableOpacity activeOpacity={0.1} onPress={()=> navigation.navigate("UpdateInventory", {id: data.id})}>
+        <TouchableOpacity activeOpacity={0.1} onPress={() => navigation.navigate("DetailInventory", { id: data.id })}>
             <View style={styles.containerStyle}>
                 <View>
                     <View>

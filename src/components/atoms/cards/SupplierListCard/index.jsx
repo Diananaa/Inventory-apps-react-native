@@ -10,7 +10,7 @@ const SupplierList = ({ data, navigation }) => {
                     <View style={styles.containerLeft}>
 
                         {data?.contacts.map((contact, index) => (
-                            <Row>
+                            <Row key={index}>
                                 <View style={styles.iconStyle}>
                                     {contact.contactType === "mobilePhone" && <ICphone />}
                                     {contact.contactType === "officePhone" && <ICphoneOffice />}

@@ -4,8 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 const CardSkeleton = () => {
     return (
-        <View>
-            <View style={styles.skeletonContainer} />
+        <View style={styles.skeletonContainer}>
             <ContentLoader
                 backgroundColor={'#C7C3C3'}
                 foregroundColor={'#DCD6D6'}
@@ -19,9 +18,7 @@ const CardSkeleton = () => {
 const styles = StyleSheet.create({
 
     skeletonContainer: {
-        height: 150,
-        width: '100%',
-        borderRadius: 20,
+        height: 180
     }
 });
 
