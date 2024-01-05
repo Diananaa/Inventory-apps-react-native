@@ -27,19 +27,19 @@ const InputForm = ({ onChangeText, onBlur, value, label, placeholder, type, erro
                         placeholder={placeholder}
                         style={styles.inputType}
                         {...props}
-                        secureTextEntry={showPassword}
+                        secureTextEntry={type === "password" && !showPassword}
                     />
                     {
                         type === "password" && (
-                            <View style={{ paddingRight: 10 }}>
+                            <View style={styles.containerInputPassword}>
                                 {
                                     showPassword ? (
                                         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                            <ICEye />
+                                            <ICEyeRed />
                                         </TouchableOpacity>
                                     ) : (
                                         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                            <ICEyeRed />
+                                            <ICEye />
                                         </TouchableOpacity>
                                     )
                                 }
@@ -120,7 +120,11 @@ const styles = StyleSheet.create({
     },
     errorStyle: {
         color: 'rgb(225 29 72)'
+    },
+    containerInputPassword: {
+        paddingRight: 10
     }
+
 })
 
 export default InputForm
