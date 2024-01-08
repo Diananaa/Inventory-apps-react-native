@@ -15,6 +15,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@reduxjs/toolkit": "^2.0.1",
+    "@sentry/react-native": "^5.15.2",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
     "formik": "^2.4.5",
