@@ -37,9 +37,10 @@ const ListInventory = ({ navigation }) => {
         hasNextPage,
         isFetching: isFetchingList,
         isFetchingNextPage,
-    } = useInfiniteQuery('getListInventory', ({ pageParam = 0 }) => getListInventoryAPI(pageParam), {
-        getNextPageParam: (lastPage) => lastPage.page + 1,
+    } = useInfiniteQuery('getListInventory', getListInventoryAPI, {
+        getNextPageParam: (lastPage) => lastPage.totalPages > lastPage.page ? lastPage.page + 1 : undefined,
     });
+    
     return (
         <View style={styles.container}>
             <Header
