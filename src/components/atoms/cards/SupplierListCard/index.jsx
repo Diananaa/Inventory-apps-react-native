@@ -30,7 +30,7 @@ const SupplierList = ({ data, navigation }) => {
                         </View>
                         <View style={styles.mapsStyle}>
                             <Text numberOfLines={7}>
-                                {data.address}, {data.city}, {data.postCode}
+                                {data?.address}, {data?.city}, {data?.postCode}
                             </Text>
                         </View>
                     </Row>

@@ -15,9 +15,10 @@ const ListSupplier = ({ navigation }) => {
         hasNextPage,
         isFetching,
         isFetchingNextPage,
-    } = useInfiniteQuery('getListSupplier', ({ pageParam = 0 }) => getListSupplierAPI(pageParam), {
-        getNextPageParam: (lastPage) => lastPage.page + 1,
-    });
+    } = useInfiniteQuery('getListSupplier', getListSupplierAPI,
+        { getNextPageParam: (lastPage) => lastPage.totalPages > lastPage.page ? lastPage.page + 1 : undefined, }
+    );
+
     return (
         <View>
             <Header
@@ -31,7 +32,7 @@ const ListSupplier = ({ navigation }) => {
                         <Image source={imgDataNotFound} style={{ width: 200, height: 200 }} />
                     </View>
                 ) : (
-                    <View>
+                    <View style={{ marginBottom: 120 }}>
                         <FlatList
                             data={data?.pages?.flatMap((page) => page?.data)}
                             renderItem={({ item }) => <SupplierList data={item} navigation={navigation} />}
@@ -43,13 +44,13 @@ const ListSupplier = ({ navigation }) => {
                             }}
                             ListFooterComponent={isFetching ? <ActivityIndicator /> : null}
                         />
-
+                        <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.3} onPress={() => navigation.navigate("CreateSupplier")}>
+                            <ICplusLogo width={24} height={24} style={styles.iconPlus} fill="white" />
+                        </TouchableOpacity>
                     </View>
                 )
             }
-            <TouchableOpacity style={styles.buttonStyle} activeOpacity={0.3} onPress={() => navigation.navigate("CreateInventory")}>
-                <ICplusLogo width={24} height={24} style={styles.iconPlus} fill="white" />
-            </TouchableOpacity>
+
         </View >
     );
 };
@@ -66,8 +67,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 2,
-        bottom: 70,
-        right: 10,
+        bottom: 20,
+        right: 20,
         padding: 14,
         backgroundColor: 'rgb(153 27 27)',
         borderRadius: 100

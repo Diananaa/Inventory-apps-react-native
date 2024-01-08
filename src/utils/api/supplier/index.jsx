@@ -15,7 +15,7 @@ const useSupplierAPI = () => {
         ).catch(er => console.error(er))
         return response.data
     }
-    const getListSupplierAPI = async ({ pageParam = 0, size = 5 }) => {
+    const getListSupplierAPI = async ({ pageParam = 1, size = 5 }) => {
         const response = await axios.get(`/Supplier/inquiry/${pageParam}/${size}`,
             {
                 headers: {
