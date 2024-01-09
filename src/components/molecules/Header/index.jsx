@@ -4,7 +4,7 @@ const Header = ({ title, desc, type }) => {
     return (
         <View style={styles.container(type)}>
             <Text style={styles.titleStyle(type)}>{title ?? "your name page"}</Text>
-            {desc ? <Text style={styles.descStyle}>{desc}</Text> : null}
+            {desc ? <Text style={styles.descStyle(type)}>{desc}</Text> : null}
         </View>
     )
 }
@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
         color: type === "primary" ? "white" : 'rgb(55 65 81)',
         fontWeight: '600'
     }),
-    descStyle: {
+    descStyle: (type) => ({
         fontSize: 14,
-        color: 'rgb(55 65 81)',
+        color: type === "primary" ? "white" : 'rgb(55 65 81)',
         fontWeight: '300'
-    },
+    }),
     container: (type) => (
         {
             justifyContent: 'center',

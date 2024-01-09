@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TextInput, FlatList, Pressable, ScrollView } from "react-native";
 import { Realm, RealmProvider, useRealm, useQuery } from '@realm/react'
+import Header from "../../components/molecules/Header";
+import Row from "../../components/atoms/Row";
 
 class Task extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
@@ -30,67 +32,64 @@ const taskSchema = {
 
 Object.assign(Task, { schema: taskSchema });
 
+
 function TaskApp() {
   const realm = useRealm();
   const tasks = useQuery(Task);
   const [newDescription, setNewDescription] = useState("")
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa tasks', tasks)
+
+  const onCreate = () => {
+    realm.write(() => {
+      realm.create("Task", Task.generate(newDescription));
+    });
+    setNewDescription("")
+  }
+  const onDelete = (item: any) => {
+    realm.write(() => {
+      realm.delete(item)
+    })
+  }
+  const onCemplete = (item: any) => {
+    realm.write(() => {
+      item.isComplete = !item.isComplete
+    })
+  }
   return (
     <SafeAreaView>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
+      <Header
+        title={"Effortless Inventory Mastery:"}
+        desc={"Turning Tasks into Triumphs"}
+        type={"primary"}
+      />
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10, }}>
         <TextInput
           value={newDescription}
           placeholder="Enter new task description"
           onChangeText={setNewDescription}
         />
         <Pressable
-          onPress={() => {
-            realm.write(() => {
-              realm.create("Task", Task.generate(newDescription));
-            });
-            setNewDescription("")
-          }}><Text>➕</Text></Pressable>
+          onPress={() => onCreate()}>
+          <Text>➕</Text>
+        </Pressable>
       </View>
       <ScrollView>
         {
           tasks.map((item, key) => (
-            <View key={key} style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
+            <View key={key} style={{ flexDirection: 'row', margin: 10, justifyContent: 'space-between', alignItems: 'center', borderBottomColor: "#F4B9A4", borderBottomWidth: 1 }}>
+              <Row style={{ alignItems: 'center' }}>
+                <Pressable
+                  onPress={() => onCemplete(item)}>
+                  <Text>{item.isComplete ? "✅" : "☑️"}</Text></Pressable>
+                <Text style={{ paddingHorizontal: 10 }} >{item.description}</Text>
+              </Row>
               <Pressable
-                onPress={() =>
-                  realm.write(() => {
-                    item.isComplete = !item.isComplete
-                  })
-                }><Text>{item.isComplete ? "✅" : "☑️"}</Text></Pressable>
-              <Text style={{ paddingHorizontal: 10 }} >{item.description}</Text>
-              <Pressable
-                onPress={() => {
-                  realm.write(() => {
-                    realm.delete(item)
-                  })
-                }} ><Text>{"🗑️"}</Text></Pressable>
+                onPress={() => onDelete(item)} >
+                <Text>{"🗑️"}</Text></Pressable>
             </View>
           ))
         }
       </ScrollView>
-      {/* <FlatList data={tasks.sorted("createdAt")} keyExtractor={(item) => item._id.toHexString()} renderItem={({ item }) => {
-        return (
-          <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
-            <Pressable
-              onPress={() =>
-                realm.write(() => {
-                  item.isComplete = !item.isComplete
-                })
-              }><Text>{item.isComplete ? "✅" : "☑️"}</Text></Pressable>
-            <Text style={{ paddingHorizontal: 10 }} >{item.description}</Text>
-            <Pressable
-              onPress={() => {
-                realm.write(() => {
-                  realm.delete(item)
-                })
-              }} ><Text>{"🗑️"}</Text></Pressable>
-          </View>
-        );
-      }} ></FlatList> */}
+
     </SafeAreaView >
   );
 }

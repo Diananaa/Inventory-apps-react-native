@@ -1,18 +1,19 @@
+import _ from 'lodash';
+import { useEffect, useState } from "react";
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from 'react-query';
 import { ICLogout } from '../assets/icons';
 import { ImgUserNull, imgDataNotFound } from '../assets/image';
 import Row from '../components/atoms/Row';
+import ProductListCard from "../components/atoms/cards/ProductListCard";
+import RealmsCard from "../components/atoms/cards/RealmsCard";
 import SupplierList from '../components/atoms/cards/SupplierListCard';
+import { CardSkeleton } from "../components/molecules/Skeleton";
 import InputSearch from '../components/organism/InputSearch';
+import getGreeting from "../hooks/getGreeting";
 import useInventoryAPI from '../utils/api/Inventory';
 import useSupplierAPI from '../utils/api/supplier';
-import { CardSkeleton } from "../components/molecules/Skeleton";
-import ProductListCard from "../components/atoms/cards/ProductListCard";
-import _ from 'lodash';
-import { useEffect, useState } from "react";
 import { removeLocalStorage } from "../utils/storage";
-import getGreeting from "../hooks/getGreeting";
 
 
 const Home = ({ navigation }) => {
@@ -99,11 +100,16 @@ const Home = ({ navigation }) => {
                     </View>
                 )
             }
+
+
             {/* mapping data list */}
             {
                 searchQuery === '' && (
                     <ScrollView >
                         <View>
+                            {/* Realms Card */}
+                            <RealmsCard onPress={() => navigation.navigate("RealmsPage")} />
+
                             <View style={{ marginHorizontal: 8 }}>
                                 <Row style={{ justifyContent: 'space-between' }}>
                                     <Text style={style.textTitleStyle}>Supplier</Text>
@@ -150,11 +156,6 @@ const Home = ({ navigation }) => {
                 )
             }
 
-
-
-
-
-
         </View>
     )
 }
@@ -191,5 +192,6 @@ const style = StyleSheet.create({
     textTitleStyle: {
         fontSize: 18,
         fontWeight: 'bold'
-    }
+    },
+
 })

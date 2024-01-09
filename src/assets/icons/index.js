@@ -12,10 +12,11 @@ import ICuserLogo from './user.svg'
 import ICLogout from './icon-logout.svg'
 import ICEye from './icon-eye.svg'
 import ICEyeRed from './icon-eye-red.svg'
-
+import ICNote from './icon-note.svg'
 
 export {
     ICArrowDown, ICClose,
+    ICNote,
     ICCloseDisable, ICSearch, ICemail, ICkeyLogo, ICmaps, ICphone,
     ICphoneOffice, ICplusLogo,
     ICuserLogo,
