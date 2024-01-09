@@ -13,6 +13,7 @@ import { CreateInventory, DetailInventory, ListInventory, UpdateInventory } from
 import SplashScreen from '../pages/Splashscreen';
 import { CreateSupplier, ListSupplier, UpdateSupplier } from '../pages/Supplier';
 import { useRef } from 'react';
+import Realmss from '../pages/Realmss';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
@@ -30,36 +31,37 @@ Sentry.init({
   tracesSampleRate: 1.0,
   enableAutoSessionTracking: true,
 });
-const App = () => {
+const Router = () => {
   const navigation = useRef();
 
   return (
-    <QueryClientProvider client={queryClient}>
-
-      <Provider store={store}>
-        <NavigationContainer
-          ref={navigation}
-          onReady={() => {
-            routingInstrumentation.registerNavigationContainer(navigation);
-          }}
-        >
-          <ToastProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <NavigationContainer
+            ref={navigation}
+            onReady={() => {
+              routingInstrumentation.registerNavigationContainer(navigation);
+            }}
+          >
             <Stack.Navigator>
               <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+              <Stack.Screen header name="RealmsPage" component={Realmss} options={{ headerShown: false }} />
               <Stack.Screen options={{ headerShown: false }} name="Home" component={Home} />
               <Stack.Screen header name="CreateInventory" component={CreateInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="CreateSupplier" component={CreateSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListSupplier" component={ListSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="ListInventory" component={ListInventory} options={{ headerShown: false }} />
-              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
               <Stack.Screen header name="UpdateInventory" component={UpdateInventory} options={{ headerShown: false }} />
               <Stack.Screen header name="UpdateSupplier" component={UpdateSupplier} options={{ headerShown: false }} />
               <Stack.Screen header name="DetailInventory" component={DetailInventory} options={{ headerShown: false }} />
             </Stack.Navigator>
-          </ToastProvider>
-        </NavigationContainer>
-      </Provider>
-    </QueryClientProvider>
+          </NavigationContainer>
+        </ToastProvider>
+      </QueryClientProvider >
+    </Provider>
   );
 };
-export default Sentry.withProfiler(App);
+
+export default Router
