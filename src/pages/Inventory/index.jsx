@@ -1,4 +1,4 @@
-import CreateInventory from "./CreateInventory"; 
+import CreateInventory from "./createInventory";
 import UpdateInventory from "./UpdateInventory";
 import ListInventory from "./ListInventory";
 import DetailInventory from "./DetailInventory";

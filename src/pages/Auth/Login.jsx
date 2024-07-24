@@ -1,5 +1,5 @@
 import { Formik } from "formik"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { useToast } from "react-native-toast-notifications"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
@@ -41,11 +41,12 @@ const Login = ({ navigation }) => {
     })
     return (
         <>
-            <Header
+            <Text>I have a acount login</Text>
+            {/* <Header
                 title={"Login"}
                 desc={"I have a acount login"}
-            />
-
+            /> */}
+            <Text testID="hello-id">hello word</Text>
             <ScrollView style={styles.container}>
                 <Formik
                     initialValues={initialValues}
@@ -57,6 +58,7 @@ const Login = ({ navigation }) => {
                     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                         <View>
                             <InputForm
+
                                 onChangeText={handleChange('username')}
                                 onBlur={handleBlur('username')}
                                 value={values.username}
@@ -74,7 +76,7 @@ const Login = ({ navigation }) => {
                                 placeholder={'Your password'}
                                 type={"password"}
                             />
-                            <View style={styles.buttonStyle}>
+                            <View style={styles.buttonStyle} >
                                 <Button title={"Login"} disabled={loginQuery.isLoading} onPress={handleSubmit} />
                             </View>
                         </View>
