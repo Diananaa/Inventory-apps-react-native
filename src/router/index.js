@@ -4,6 +4,7 @@ import { ToastProvider } from 'react-native-toast-notifications';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { store } from '../redux/store';
 import * as Sentry from "@sentry/react-native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 // page
 import { Provider } from 'react-redux';
@@ -14,29 +15,38 @@ import SplashScreen from '../pages/Splashscreen';
 import { CreateSupplier, ListSupplier, UpdateSupplier } from '../pages/Supplier';
 import { useRef } from 'react';
 import Realmss from '../pages/Realmss';
+import SettingsScreen from '../pages/Component/SettingsScreen';
+import HomeScreen from '../pages/Component/HomeScreen';
+import CustomDrawerContent from '../pages/Component/CustomDrawerContent';
+import { Image, Text, TouchableOpacity } from 'react-native';
+import { ICMenuBox, ICMenuBoxActive } from '../assets/mza/icon';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
-
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
 
 const queryClient = new QueryClient()
-Sentry.init({
-  dsn: "https://c492d57b14ada1a3e639ddff27c53bf4@o4506476830064640.ingest.sentry.io/4506516703150080",
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-      // ... other options
-    }),
-  ],
-  tracesSampleRate: 1.0,
-  enableAutoSessionTracking: true,
-});
+// Sentry.init({
+//   dsn: "https://c492d57b14ada1a3e639ddff27c53bf4@o4506476830064640.ingest.sentry.io/4506516703150080",
+//   integrations: [
+//     new Sentry.ReactNativeTracing({
+//       routingInstrumentation,
+//       // ... other options
+//     }),
+//   ],
+//   tracesSampleRate: 1.0,
+//   enableAutoSessionTracking: true,
+// });
+
+
+
 const Router = () => {
   const navigation = useRef();
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+      {/* <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <NavigationContainer
             ref={navigation}
@@ -59,7 +69,43 @@ const Router = () => {
             </Stack.Navigator>
           </NavigationContainer>
         </ToastProvider>
-      </QueryClientProvider >
+      </QueryClientProvider > */}
+      <NavigationContainer  >
+        <Drawer.Navigator
+          initialRouteName="Home"
+          defaultStatus='open'
+          screenOptions={{
+            drawerPosition: 'right',
+            overlayColor: 0,
+            drawerActiveTintColor: 'white',
+            activeBackgroundColor: 'white',
+            drawerStyle: {
+              width: 80,
+            }
+          }}
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
+        >
+          <Drawer.Screen name="Home"
+            options={({ navigation }) => ({
+              headerRight: () => (
+                <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                  <Text style={{ marginRight: 20 }}>MENU</Text>
+                </TouchableOpacity>
+              )
+            })}
+            component={HomeScreen} />
+
+          <Drawer.Screen name="menu"
+            options={({ navigation }) => ({
+              headerRight: () => (
+                <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                  <Text style={{ marginRight: 20 }}>MENU</Text>
+                </TouchableOpacity>
+              )
+            })}
+            component={SettingsScreen} />
+        </Drawer.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 };
