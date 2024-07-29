@@ -20,6 +20,9 @@ import HomeScreen from '../pages/Component/HomeScreen';
 import CustomDrawerContent from '../pages/Component/CustomDrawerContent';
 import { Image, Text, TouchableOpacity } from 'react-native';
 import { ICMenuBox, ICMenuBoxActive } from '../assets/mza/icon';
+import { createModalStack, ModalProvider } from 'react-native-modalfy';
+import MessageSentModal from '../pages/Component/modal/MessageSentModal';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const Stack = createNativeStackNavigator();
@@ -39,7 +42,39 @@ const queryClient = new QueryClient()
 //   enableAutoSessionTracking: true,
 // });
 
-
+const modalConfig = {
+  MessageSentModal
+};
+const defaultOptions = {
+  backBehavior: 'none', // to disable back button & outside touches
+  disableFlingGesture: true, // optionally: to disable fling-to-close gesture
+  backdropOpacity: 0.7,
+  // animateInConfig: {
+  //   easing: Easing.inOut(Easing.exp),
+  //   duration: 900,
+  // },
+  // animateOutConfig: {
+  //   easing: Easing.inOut(Easing.exp),
+  //   duration: 900,
+  // },
+  // transitionOptions: (animatedValue) => ({
+  //   transform: [
+  //     {
+  //       translateY: animatedValue.interpolate({
+  //         inputRange: [0, 1, 2],
+  //         outputRange: [screenHeight, 0, screenHeight],
+  //       }),
+  //     },
+  //     {
+  //       scale: animatedValue.interpolate({
+  //         inputRange: [0, 1, 2],
+  //         outputRange: [0, 1, 0.9],
+  //       }),
+  //     },
+  //   ],
+  // }),
+};
+const stack = createModalStack(modalConfig, defaultOptions);
 
 const Router = () => {
   const navigation = useRef();
@@ -70,42 +105,46 @@ const Router = () => {
           </NavigationContainer>
         </ToastProvider>
       </QueryClientProvider > */}
-      <NavigationContainer  >
-        <Drawer.Navigator
-          initialRouteName="Home"
-          defaultStatus='open'
-          screenOptions={{
-            drawerPosition: 'right',
-            overlayColor: 0,
-            drawerActiveTintColor: 'white',
-            activeBackgroundColor: 'white',
-            drawerStyle: {
-              width: 80,
-            }
-          }}
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-        >
-          <Drawer.Screen name="Home"
-            options={({ navigation }) => ({
-              headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                  <Text style={{ marginRight: 20 }}>MENU</Text>
-                </TouchableOpacity>
-              )
-            })}
-            component={HomeScreen} />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ModalProvider stack={stack}>
+          <NavigationContainer  >
+            <Drawer.Navigator
+              initialRouteName="Home"
+              defaultStatus='open'
+              screenOptions={{
+                drawerPosition: 'right',
+                overlayColor: 0,
+                drawerActiveTintColor: 'white',
+                activeBackgroundColor: 'white',
+                drawerStyle: {
+                  width: 80,
+                }
+              }}
+              drawerContent={(props) => <CustomDrawerContent {...props} />}
+            >
+              <Drawer.Screen name="Home"
+                options={({ navigation }) => ({
+                  headerRight: () => (
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                      <Text style={{ marginRight: 20 }}>MENU</Text>
+                    </TouchableOpacity>
+                  )
+                })}
+                component={HomeScreen} />
 
-          <Drawer.Screen name="menu"
-            options={({ navigation }) => ({
-              headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                  <Text style={{ marginRight: 20 }}>MENU</Text>
-                </TouchableOpacity>
-              )
-            })}
-            component={SettingsScreen} />
-        </Drawer.Navigator>
-      </NavigationContainer>
+              <Drawer.Screen name="menu"
+                options={({ navigation }) => ({
+                  headerRight: () => (
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                      <Text style={{ marginRight: 20 }}>MENU</Text>
+                    </TouchableOpacity>
+                  )
+                })}
+                component={SettingsScreen} />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </ModalProvider>
+      </GestureHandlerRootView>
     </Provider>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Image, Text, View } from 'react-native';
 import { ICHomeActive } from '../../assets/mza/icon';
+import Message from './modal/Message';
 
 export default function HomeScreen({ navigation }) {
     return (
@@ -11,6 +12,7 @@ export default function HomeScreen({ navigation }) {
             />
             <Text>Home Screen djfgjsd</Text>
             <Image source={ICHomeActive} style={{width:24, height:24}} />
+            <Message />
         </View>
     );
 }
