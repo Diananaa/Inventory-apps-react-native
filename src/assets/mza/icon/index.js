@@ -6,6 +6,8 @@ import ICHomeActive from './Home-aktif.png'
 import ICMenuBoxActive from './menu-box-aktif.png'
 import ICNotification from './Notification.png'
 import ICHome from './Home.png'
+import ICEye from './icon-eye.svg'
+import ICEyeoff from './icon-eye-off.svg'
 
 export {
     ICAccountCircle,
@@ -15,5 +17,7 @@ export {
     ICMenuBox,
     ICMenuBoxActive,
     ICNotification,
-    ICHome
+    ICHome,
+    ICEye,
+    ICEyeoff
 }
