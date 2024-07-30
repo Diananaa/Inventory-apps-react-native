@@ -5,13 +5,16 @@ const CButton = ({
     onPress, disabled,
     styleBtn,  //style button
     fontColor, //color text btn
-    type, ...props }) => {
+    icon,
+    type,
+    ...props }) => {
 
     return (
         <TouchableOpacity onPress={onPress} disabled={disabled}
             activeOpacity={0.2}
             {...props}
             style={[styles.container(disabled, type), styleBtn]}>
+            {icon}
             <Text style={styles.titleStyle(disabled, type, fontColor)}>{title ?? "default"}</Text>
         </TouchableOpacity>
     )
@@ -46,7 +49,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: disabled ? Themes.COLOR.gray.light
             : type === 'primary' || type === 'secondary' || type === 'outline' ? Themes.COLOR.primary
-                : 'white'
+                : 'white',
+        gap: 4
     })
 
 

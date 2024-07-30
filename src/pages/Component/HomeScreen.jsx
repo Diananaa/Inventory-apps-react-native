@@ -12,9 +12,8 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => navigation.navigate('Settings')}
             />
             <Text>Home Screen djfgjsd</Text>
-            <Image source={ICHomeActive} style={{ width: 24, height: 24 }} />
             <Message />
-            <View style={{ width: '70%', gap: 8}}>
+            <View style={{ width: '70%', gap: 8 }}>
                 <CButton
                     // title={'default'}
                     disabled={true}
@@ -30,7 +29,7 @@ export default function HomeScreen({ navigation }) {
                     onPress={() => navigation.navigate('Settings')}
                     type={'secondary'}
                 />
-                 <CButton
+                <CButton
                     title={'outline'}
                     onPress={() => navigation.navigate('Settings')}
                     type={'outline'}
@@ -45,9 +44,17 @@ export default function HomeScreen({ navigation }) {
                     title={'secondary (fstyleBtn)'}
                     onPress={() => navigation.navigate('Settings')}
                     type={'secondary'}
-                    styleBtn={{backgroundColor:'orange'}}
+                    styleBtn={{ backgroundColor: 'orange' }}
                 />
-               
+                <CButton
+                    title={'secondary (icon)'}
+                    onPress={() => navigation.navigate('Settings')}
+                    type={'outline'}
+                    icon={
+                        <Image source={ICHomeActive} style={{ width: 24, height: 24 }} />
+                    }
+                />
+
             </View>
         </View>
     );
