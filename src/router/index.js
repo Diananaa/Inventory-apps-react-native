@@ -23,6 +23,9 @@ import { ICMenuBox, ICMenuBoxActive } from '../assets/mza/icon';
 import { createModalStack, ModalProvider } from 'react-native-modalfy';
 import MessageSentModal from '../pages/Component/modal/MessageSentModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LoginScreen } from '../pages/Component';
+
+
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const Stack = createNativeStackNavigator();
@@ -141,6 +144,15 @@ const Router = () => {
                   )
                 })}
                 component={SettingsScreen} />
+              <Drawer.Screen name="login"
+                options={({ navigation }) => ({
+                  headerRight: () => (
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                      <Text style={{ marginRight: 20 }}>Login</Text>
+                    </TouchableOpacity>
+                  )
+                })}
+                component={LoginScreen} />
             </Drawer.Navigator>
           </NavigationContainer>
         </ModalProvider>

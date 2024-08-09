@@ -20,6 +20,11 @@ export default function CustomDrawerContent(props) {
             name: 'menu',
             icon: ICMenuBox,
             iconActive: ICMenuBoxActive
+        }, {
+            label: 'Login',
+            name: 'login',
+            icon: ICMenuBox,
+            iconActive: ICMenuBoxActive
         }
     ]
     return (

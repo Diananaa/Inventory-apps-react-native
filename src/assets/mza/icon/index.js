@@ -8,8 +8,11 @@ import ICNotification from './Notification.png'
 import ICHome from './Home.png'
 import ICEye from './icon-eye.svg'
 import ICEyeoff from './icon-eye-off.svg'
+import ICZurich from './icon-zurich.svg'
+import ICZurichProWhite from './icon-mzapro-white.svg'
 
 export {
+    ICZurichProWhite,
     ICAccountCircle,
     ICArrowRight,
     ICBtnMZA,
@@ -19,5 +22,6 @@ export {
     ICNotification,
     ICHome,
     ICEye,
-    ICEyeoff
+    ICEyeoff,
+    ICZurich
 }
